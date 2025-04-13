@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyChoice - Business and Capital Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <!-- Header with Auth Buttons -->
+    <header class="glass-header">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-crown"></i></span>
+                <span>MoneyChoice</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="capital.html">MoneyControl</a></li>
+                    <li><a href="biz.html">MoneyBiz</a></li>
+                    <li id="auth-buttons">
+                        <button class="btn btn-outline" id="login-btn">Login</button>
+                        <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+                    </li>
+                    <li id="user-menu" style="display:none;">
+                        <a href="plans.html" class="btn btn-outline">My Account</a>
+                        <button class="btn btn-primary" id="logout-btn">Logout</button>
+                    </li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content animate__animated animate__fadeInLeft">
+                <h1>Forecasting with over <span class="highlight">80% accuracy</span> since 2016</h1>
+                <p class="hero-subtitle">Harnessing the power of AI and human expertise for unparalleled financial insights</p>
+                <div class="cta-buttons">
+                    <a href="#explanation" class="btn btn-primary btn-large pulse">Learn How It Works</a>
+                </div>
+            </div>
+            <div class="hero-image animate__animated animate__fadeInRight">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Financial Analytics">
+            </div>
+        </div>
+    </section>
+
+    <!-- What, Why, How Section -->
+    <section id="explanation" class="explanation-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span class="highlight">Approach</span></h2>
+            </div>
+            
+            <div class="explanation-widget">
+                <div class="explanation-item animate__animated animate__fadeInUp" data-wow-delay="0.1s">
+                    <div class="explanation-content">
+                        <h3>What We Do</h3>
+                        <p>We provide cutting-edge financial solutions that combine AI-driven analytics with expert human insights to deliver superior results for your business and investments.</p>
+                    </div>
+                    <div class="explanation-media">
+                        <a href="https://youtu.be/4zhXdDEyHdk" target="_blank" class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/4zhXdDEyHdk/maxresdefault.jpg" alt="What We Do">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="explanation-item animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                    <div class="explanation-content">
+                        <h3>Why Choose Us</h3>
+                        <p>With over 8 years of proven accuracy and 5000+ satisfied clients, our unique approach combines technology with financial expertise to give you an unbeatable advantage.</p>
+                    </div>
+                    <div class="explanation-media">
+                        <a href="https://youtu.be/CEKfRoSZQWI" target="_blank" class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/CEKfRoSZQWI/maxresdefault.jpg" alt="Why Choose Us">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="explanation-item animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                    <div class="explanation-content">
+                        <h3>How It Works</h3>
+                        <p>Our proprietary algorithms analyze market trends while our experts provide actionable insights, creating a powerful synergy that drives your financial success.</p>
+                    </div>
+                    <div class="explanation-media">
+                        <a href="https://youtu.be/2vgj3Gsfd-I" target="_blank" class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/2vgj3Gsfd-I/maxresdefault.jpg" alt="How It Works">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Transform Your <span class="highlight">Business</span></h2>
+                <p class="section-subtitle">Discover our powerful solutions designed for growth and success</p>
+            </div>
+            <div class="products-grid">
+                <a href="capital.html" class="product-card animate__animated animate__zoomIn">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1511&q=80" alt="MoneyControl">
+                    </div>
+                    <div class="product-content">
+                        <h3>MoneyControl</h3>
+                        <p>Advanced capital management and investment solutions for optimal financial growth.</p>
+                        <div class="product-cta">
+                            <span>Explore <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="biz.html" class="product-card animate__animated animate__zoomIn">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="MoneyBiz">
+                    </div>
+                    <div class="product-content">
+                        <h3>MoneyBiz</h3>
+                        <p>Comprehensive business solutions to attract customers and optimize operations.</p>
+                        <div class="product-cta">
+                            <span>Explore <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card animate__animated" data-animate="animate__fadeInUp">
+                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div class="stat-card animate__animated" data-animate="animate__fadeInUp">
+                    <div class="stat-number" data-count="83">0</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-card animate__animated" data-animate="animate__fadeInUp">
+                    <div class="stat-number" data-count="24">0</div>
+                    <div class="stat-label">Support Hours</div>
+                </div>
+                <div class="stat-card animate__animated" data-animate="animate__fadeInUp">
+                    <div class="stat-number" data-count="8">0</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our <span class="highlight">Clients</span> Say</h2>
+                <p class="section-subtitle">Hear from businesses that transformed with our solutions</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card active">
+                    <div class="testimonial-content">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p>MoneyChoice transformed our capital management strategy. We've seen a 40% increase in ROI within just six months of using their platform.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Sarah Johnson">
+                        </div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>CEO, FinTech Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p>The business tools provided by MoneyBiz helped us streamline our operations and attract 30% more customers in the first quarter.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen">
+                        </div>
+                        <div class="author-info">
+                            <h4>Michael Chen</h4>
+                            <p>Founder, RetailChain</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p>Flexible pricing and exceptional support make MoneyChoice the perfect partner for our growing startup. Highly recommended!</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma Rodriguez">
+                        </div>
+                        <div class="author-info">
+                            <h4>Emma Rodriguez</h4>
+                            <p>COO, TechStart</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-prev"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <button class="slider-next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Business?</h2>
+                <p>Join thousands of businesses growing with MoneyChoice today.</p>
+                <div class="cta-buttons">
+                    <a href="#auth-modals" class="btn btn-primary btn-large pulse" id="cta-signup-btn">Get Started Now</a>
+                    <div class="auth-options">
+                        <span>Already have an account? <a href="#auth-modals" id="cta-login-link">Login</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <div class="logo">
+                        <span class="logo-icon"><i class="fas fa-crown"></i></span>
+                        <span>MoneyChoice</span>
+                    </div>
+                    <p>Your comprehensive solution for business growth and capital management.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="capital.html">MoneyControl</a></li>
+                        <li><a href="biz.html">MoneyBiz</a></li>
+                        <li><a href="plans.html">Plans</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 MoneyChoice. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modals -->
+    <div id="auth-modals">
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="modal-header">
+                    <h2>Welcome Back</h2>
+                    <p>Login to access your account</p>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="login-email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-password" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            <label for="remember-me">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login <i class="fas fa-arrow-right"></i></button>
+                    <div class="auth-message" id="login-message"></div>
+                </form>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" id="switch-to-signup">Sign up</a></p>
+                </div>
+                <div class="social-login">
+                    <p>Or login with</p>
+                    <div class="social-buttons">
+                        <button class="btn-social google">
+                            <i class="fab fa-google"></i> Google
+                        </button>
+                        <button class="btn-social facebook">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Modal -->
+        <div id="signup-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div class="modal-header">
+                    <h2>Create Your Account</h2>
+                    <p>Join MoneyChoice today</p>
+                </div>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="signup-email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="signup-password" placeholder="Create a password" required>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar"></div>
+                            <span class="strength-text">Weak</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <div class="terms-agree">
+                            <input type="checkbox" id="agree-terms" required>
+                            <label for="agree-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Account <i class="fas fa-arrow-right"></i></button>
+                    <div class="auth-message" id="signup-message"></div>
+                </form>
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+                </div>
+                <div class="social-login">
+                    <p>Or sign up with</p>
+                    <div class="social-buttons">
+                        <button class="btn-social google">
+                            <i class="fab fa-google"></i> Google
+                        </button>
+                        <button class="btn-social facebook">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content success-modal">
+            <span class="close-btn">&times;</span>
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Success!</h2>
+            <p id="success-message">Your account has been created successfully.</p>
+            <button class="btn btn-primary" id="success-close-btn">Continue to Dashboard</button>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal">
+        <div class="modal-content error-modal">
+            <span class="close-btn">&times;</span>
+            <div class="error-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h2>Error</h2>
+            <p id="error-message">There was an error processing your request.</p>
+            <button class="btn btn-primary" id="error-close-btn">Try Again</button>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="firebase.js"></script>
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
