@@ -1,6 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Debugging initialization
-    console.log('[Debug] MoneyChoice Capital initializing...');
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    // Check for saved theme preference or use preferred color scheme
+    const savedTheme = localStorage.getItem('theme') || 
+                       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    html.setAttribute('data-theme', savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
 
     // Mobile menu toggle
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -8,17 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (mobileMenuBtn && navLinks) {
         mobileMenuBtn.addEventListener('click', function() {
-            console.log('[Debug] Mobile menu button clicked');
             this.classList.toggle('active');
             navLinks.classList.toggle('active');
             
             // Toggle body overflow when menu is open
             if (navLinks.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
-                console.log('[Debug] Mobile menu opened');
             } else {
                 document.body.style.overflow = '';
-                console.log('[Debug] Mobile menu closed');
             }
         });
     }
@@ -30,12 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenuBtn.classList.remove('active');
                 navLinks.classList.remove('active');
                 document.body.style.overflow = '';
-                console.log('[Debug] Mobile menu closed after navigation');
             }
         });
     });
 
-    // Smooth scrolling for anchor links with offset for fixed header
+    // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -45,251 +54,154 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                console.log(`[Debug] Scrolling to: ${targetId}`);
+                // Close mobile menu if open
+                if (navLinks && navLinks.classList.contains('active')) {
+                    mobileMenuBtn.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
                 
-                const headerHeight = document.querySelector('.glass-nav').offsetHeight;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                
-                window.scrollTo({
-                    top: targetPosition,
+                targetElement.scrollIntoView({
                     behavior: 'smooth'
                 });
             }
         });
     });
 
-    // Back to top button with progress indicator
+    // Back to top button
     const backToTopBtn = document.getElementById('back-to-top');
     
-    if (backToTopBtn) {
-        window.addEventListener('scroll', function() {
-            const scrollPosition = window.pageYOffset;
-            const docHeight = document.body.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollPosition / docHeight) * 100;
-            
-            if (scrollPosition > 300) {
-                backToTopBtn.style.display = 'flex';
-                backToTopBtn.title = `Scrolled ${Math.round(scrollPercent)}%`;
-            } else {
-                backToTopBtn.style.display = 'none';
-            }
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.style.display = 'flex';
+        } else {
+            backToTopBtn.style.display = 'none';
+        }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
-        
-        backToTopBtn.addEventListener('click', function() {
-            console.log('[Debug] Scrolling to top');
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
+    });
 
-    // Animate stats counter with improved performance
+    // Animate stats counter
     const statNumbers = document.querySelectorAll('.stat-value[data-count]');
     
     function animateStats() {
-        console.log('[Debug] Animating stats counters');
-        
         statNumbers.forEach(stat => {
             const target = parseInt(stat.getAttribute('data-count'));
             const duration = 2000;
-            const startTime = performance.now();
+            const step = target / (duration / 16);
+            let current = 0;
             
-            const updateCount = (currentTime) => {
-                const elapsedTime = currentTime - startTime;
-                const progress = Math.min(elapsedTime / duration, 1);
-                const currentValue = Math.floor(progress * target);
-                
-                stat.textContent = currentValue;
-                
-                if (progress < 1) {
+            const updateCount = () => {
+                current += step;
+                if (current < target) {
+                    stat.textContent = Math.floor(current);
                     requestAnimationFrame(updateCount);
                 } else {
                     stat.textContent = target;
                 }
             };
             
-            requestAnimationFrame(updateCount);
+            updateCount();
         });
     }
     
-    // Intersection Observer for scroll animations
-    const createObserver = (elements, callback, options = {}) => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    callback(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, options);
-        
-        elements.forEach(element => observer.observe(element));
-    };
-
-    // Animate elements when they come into view
-    const animatedElements = document.querySelectorAll('[data-animation]');
-    createObserver(animatedElements, (element) => {
-        const animation = element.getAttribute('data-animation');
-        const delay = element.getAttribute('data-delay') || 0;
-        
-        element.style.animationDelay = `${delay}ms`;
-        element.classList.add(animation);
-        console.log(`[Debug] Animating element with: ${animation}`);
-        
-        // Remove the attribute to prevent re-animation
-        element.removeAttribute('data-animation');
-    }, { threshold: 0.1 });
-
-    // Stats counter observer
+    // Only animate when stats section is in view
     const statsSection = document.querySelector('.about-section');
-    if (statsSection && statNumbers.length > 0) {
-        createObserver([statsSection], animateStats, { threshold: 0.5 });
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            animateStats();
+            observer.unobserve(statsSection);
+        }
+    });
+    
+    if (statsSection) {
+        observer.observe(statsSection);
     }
 
-    // Testimonial slider with enhanced controls
+    // Testimonial slider
     const testimonialCards = document.querySelectorAll('.testimonial-card');
     const dots = document.querySelectorAll('.dot');
     const prevBtn = document.querySelector('.slider-prev');
     const nextBtn = document.querySelector('.slider-next');
     let currentIndex = 0;
     let testimonialInterval;
-    let isDragging = false;
-    let startPos = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID;
 
     function showTestimonial(index) {
-        console.log(`[Debug] Showing testimonial ${index}`);
+        // Hide all testimonials and remove active class from dots
+        testimonialCards.forEach(card => card.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
         
-        testimonialCards.forEach((card, i) => {
-            card.classList.remove('active');
-            if (i === index) {
-                card.classList.add('active');
-            }
-        });
-        
-        dots.forEach((dot, i) => {
-            dot.classList.remove('active');
-            if (i === index) {
-                dot.classList.add('active');
-            }
-        });
-        
+        // Show the selected testimonial and update dot
+        testimonialCards[index].classList.add('active');
+        dots[index].classList.add('active');
         currentIndex = index;
     }
 
-    function nextSlide() {
+    function nextTestimonial() {
         let newIndex = currentIndex + 1;
         if (newIndex >= testimonialCards.length) newIndex = 0;
         showTestimonial(newIndex);
     }
 
-    function prevSlide() {
+    function prevTestimonial() {
         let newIndex = currentIndex - 1;
         if (newIndex < 0) newIndex = testimonialCards.length - 1;
         showTestimonial(newIndex);
     }
 
-    // Touch event handlers for swipe
-    function touchStart(index) {
-        return function(e) {
-            isDragging = true;
-            startPos = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-            animationID = requestAnimationFrame(animation);
-            e.preventDefault();
-        };
-    }
-
-    function touchMove(e) {
-        if (isDragging) {
-            const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-            currentTranslate = prevTranslate + currentPosition - startPos;
-        }
-    }
-
-    function touchEnd() {
-        cancelAnimationFrame(animationID);
-        isDragging = false;
-        
-        if (currentTranslate < -50) {
-            nextSlide();
-        } else if (currentTranslate > 50) {
-            prevSlide();
-        }
-        
-        currentTranslate = 0;
-        prevTranslate = 0;
-    }
-
-    function animation() {
-        // This would control the sliding animation during drag
-        animationID = requestAnimationFrame(animation);
-    }
-
-    // Initialize slider controls
-    if (testimonialCards.length > 0) {
-        // Add event listeners to dots
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showTestimonial(index);
-                resetInterval();
-            });
-        });
-
-        // Add navigation controls
-        if (prevBtn && nextBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                resetInterval();
-            });
-
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                resetInterval();
-            });
-        }
-
-        // Add touch events for mobile swipe
-        const slider = document.querySelector('.testimonials-slider');
-        if (slider) {
-            slider.addEventListener('touchstart', touchStart, { passive: false });
-            slider.addEventListener('touchmove', touchMove, { passive: false });
-            slider.addEventListener('touchend', touchEnd);
-            slider.addEventListener('mousedown', touchStart);
-            slider.addEventListener('mousemove', touchMove);
-            slider.addEventListener('mouseup', touchEnd);
-            slider.addEventListener('mouseleave', touchEnd);
-        }
-
-        // Auto-rotate testimonials
-        function startInterval() {
-            testimonialInterval = setInterval(() => {
-                nextSlide();
-            }, 5000);
-        }
-
-        function resetInterval() {
+    // Dot navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
             clearInterval(testimonialInterval);
-            startInterval();
-        }
+            showTestimonial(index);
+            startAutoRotation();
+        });
+    });
 
-        startInterval();
+    // Previous/next buttons
+    prevBtn.addEventListener('click', () => {
+        clearInterval(testimonialInterval);
+        prevTestimonial();
+        startAutoRotation();
+    });
 
-        // Pause auto-rotation on hover
-        if (slider) {
-            slider.addEventListener('mouseenter', () => {
-                clearInterval(testimonialInterval);
-            });
-            
-            slider.addEventListener('mouseleave', () => {
-                startInterval();
-            });
-        }
+    nextBtn.addEventListener('click', () => {
+        clearInterval(testimonialInterval);
+        nextTestimonial();
+        startAutoRotation();
+    });
+
+    // Auto-rotate testimonials
+    function startAutoRotation() {
+        testimonialInterval = setInterval(() => {
+            nextTestimonial();
+        }, 5000);
     }
 
-    // Sticky navigation with shadow effect
+    // Pause auto-rotation on hover
+    const sliderContainer = document.querySelector('.testimonials-slider');
+    if (sliderContainer) {
+        sliderContainer.addEventListener('mouseenter', () => {
+            clearInterval(testimonialInterval);
+        });
+        
+        sliderContainer.addEventListener('mouseleave', () => {
+            startAutoRotation();
+        });
+    }
+
+    // Start auto-rotation initially
+    if (testimonialCards.length > 0) {
+        showTestimonial(0);
+        startAutoRotation();
+    }
+
+    // Sticky navigation on scroll
     const header = document.querySelector('.glass-nav');
     
     if (header) {
@@ -302,45 +214,54 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Floating elements animation controller
-    const floatingElements = document.querySelectorAll('.floating-element');
-    floatingElements.forEach(element => {
-        element.style.animationPlayState = 'running';
-        
-        // Pause animation when not in view for performance
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    element.style.animationPlayState = 'running';
-                } else {
-                    element.style.animationPlayState = 'paused';
-                }
-            });
+    // Add parallax effect to hero wave
+    const heroWave = document.querySelector('.hero-wave');
+    if (heroWave) {
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.pageYOffset;
+            heroWave.style.transform = `translateY(${scrollPosition * 0.3}px)`;
         });
-        
-        observer.observe(element);
+    }
+
+    // Pulse animation for CTA buttons
+    const pulseButtons = document.querySelectorAll('.pulse');
+    pulseButtons.forEach(button => {
+        button.style.animation = 'pulse 2s infinite';
     });
 
-    // Debugging: Log all animations when they start
-    document.addEventListener('animationstart', function(e) {
-        console.log(`[Debug] Animation started: ${e.animationName}`);
-    }, false);
+    // Animate Quantum Analytics cards on scroll
+    const quantumCards = document.querySelectorAll('.algorithm-card, .success-card, .stat-card, .feature-card');
+    const quantumObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
 
-    console.log('[Debug] MoneyChoice Capital initialized successfully');
+    quantumCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        quantumObserver.observe(card);
+    });
+
+    // Video thumbnail hover effects
+    const videoThumbnails = document.querySelectorAll('.video-thumbnail');
+    videoThumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('mouseenter', () => {
+            const playButton = thumbnail.querySelector('.play-button');
+            if (playButton) {
+                playButton.style.transform = 'translate(-50%, -50%) scale(1.1)';
+            }
+        });
+        
+        thumbnail.addEventListener('mouseleave', () => {
+            const playButton = thumbnail.querySelector('.play-button');
+            if (playButton) {
+                playButton.style.transform = 'translate(-50%, -50%) scale(1)';
+            }
+        });
+    });
 });
-
-// Helper function for debouncing
-function debounce(func, wait = 20, immediate = true) {
-    let timeout;
-    return function() {
-        const context = this, args = arguments;
-        const later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
-}

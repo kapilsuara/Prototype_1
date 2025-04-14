@@ -77,10 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Animate elements on scroll
     const initScrollAnimations = () => {
         const solutionCards = document.querySelectorAll('.solution-card');
-        const statCards = document.querySelectorAll('.stat-card');
         const featureCards = document.querySelectorAll('.feature-card');
-        const algorithmCards = document.querySelectorAll('.algorithm-card');
-        const successCards = document.querySelectorAll('.success-card');
         
         const animateElements = (elements) => {
             if (elements.length > 0) {
@@ -103,10 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         animateElements(solutionCards);
-        animateElements(statCards);
         animateElements(featureCards);
-        animateElements(algorithmCards);
-        animateElements(successCards);
     };
 
     // Contact form submission

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle with animation
+    // Mobile menu toggle
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
     
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Close mobile menu when clicking a link (with animation)
+    // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Back to top button with fade animation
+    // Back to top button
     const backToTopBtn = document.getElementById('back-to-top');
     
     window.addEventListener('scroll', function() {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Enhanced testimonial slider with touch support
+    // Testimonial slider
     const testimonialCards = document.querySelectorAll('.testimonial-card');
     const dots = document.querySelectorAll('.dot');
     const prevBtn = document.querySelector('.slider-prev');
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Animate stats counter with improved performance
+    // Animate stats counter
     const statNumbers = document.querySelectorAll('.stat-number');
     const statsSection = document.querySelector('.stats');
     
@@ -212,151 +212,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(statsSection);
     }
 
-    // Enhanced password strength indicator
-    const passwordInput = document.getElementById('signup-password');
-    if (passwordInput) {
-        passwordInput.addEventListener('input', function() {
-            const strengthBar = this.closest('.form-group').querySelector('.strength-bar');
-            const strengthText = this.closest('.form-group').querySelector('.strength-text');
-            const password = this.value;
-            let strength = 0;
-            
-            // Check password length
-            if (password.length > 0) strength += 20;
-            if (password.length >= 8) strength += 20;
-            
-            // Check for character variety
-            if (/[A-Z]/.test(password)) strength += 20; // Uppercase
-            if (/[a-z]/.test(password)) strength += 10; // Lowercase
-            if (/[0-9]/.test(password)) strength += 20; // Numbers
-            if (/[^A-Za-z0-9]/.test(password)) strength += 30; // Special chars
-            
-            // Cap at 100
-            strength = Math.min(strength, 100);
-            
-            // Update strength bar with smooth transition
-            strengthBar.style.transition = 'width 0.3s ease, background-color 0.3s ease';
-            strengthBar.style.width = strength + '%';
-            
-            // Update strength text and color
-            if (strength < 40) {
-                strengthBar.style.backgroundColor = 'var(--error-color)';
-                strengthText.textContent = 'Weak';
-            } else if (strength < 70) {
-                strengthBar.style.backgroundColor = 'var(--warning-color)';
-                strengthText.textContent = 'Medium';
-            } else {
-                strengthBar.style.backgroundColor = 'var(--success-color)';
-                strengthText.textContent = 'Strong';
-            }
-        });
-    }
-
-    // Modal Management System for Login/Signup
-    const initAuthModals = () => {
-        // Get all modal elements
-        const loginModal = document.getElementById('login-modal');
-        const signupModal = document.getElementById('signup-modal');
-        const successModal = document.getElementById('success-modal');
-        const errorModal = document.getElementById('error-modal');
-        
-        // Get all trigger buttons
-        const loginBtn = document.getElementById('login-btn');
-        const signupBtn = document.getElementById('signup-btn');
-        const ctaSignupBtn = document.getElementById('cta-signup-btn');
-        const ctaLoginLink = document.getElementById('cta-login-link');
-        const switchToSignup = document.getElementById('switch-to-signup');
-        const switchToLogin = document.getElementById('switch-to-login');
-        
-        // Get all close buttons
-        const closeBtns = document.querySelectorAll('.close-btn');
-        const successCloseBtn = document.getElementById('success-close-btn');
-        const errorCloseBtn = document.getElementById('error-close-btn');
-
-        // Function to open a modal
-        const openModal = (modal) => {
-            if (modal) {
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-                // Add animation
-                modal.querySelector('.modal-content').classList.add('animate__animated', 'animate__fadeIn');
-            }
-        };
-
-        // Function to close a modal
-        const closeModal = (modal) => {
-            if (modal) {
-                // Add fade out animation
-                modal.querySelector('.modal-content').classList.remove('animate__fadeIn');
-                modal.querySelector('.modal-content').classList.add('animate__fadeOut');
-                
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = '';
-                    modal.querySelector('.modal-content').classList.remove('animate__fadeOut');
-                }, 300);
-            }
-        };
-
-        // Event listeners for opening modals
-        if (loginBtn) loginBtn.addEventListener('click', () => openModal(loginModal));
-        if (signupBtn) signupBtn.addEventListener('click', () => openModal(signupModal));
-        if (ctaSignupBtn) ctaSignupBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(signupModal);
-        });
-        if (ctaLoginLink) ctaLoginLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(loginModal);
-        });
-
-        // Event listeners for switching between modals
-        if (switchToSignup) switchToSignup.addEventListener('click', (e) => {
-            e.preventDefault();
-            closeModal(loginModal);
-            setTimeout(() => openModal(signupModal), 300);
-        });
-        
-        if (switchToLogin) switchToLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            closeModal(signupModal);
-            setTimeout(() => openModal(loginModal), 300);
-        });
-
-        // Event listeners for closing modals
-        closeBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal');
-                closeModal(modal);
-            });
-        });
-
-        if (successCloseBtn) successCloseBtn.addEventListener('click', () => closeModal(successModal));
-        if (errorCloseBtn) errorCloseBtn.addEventListener('click', () => closeModal(errorModal));
-
-        // Close modal when clicking outside of modal content
-        [loginModal, signupModal, successModal, errorModal].forEach(modal => {
-            if (modal) {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeModal(modal);
-                    }
-                });
-            }
-        });
-
-        // Close modal with ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const openModal = document.querySelector('.modal[style="display: block;"]');
-                if (openModal) closeModal(openModal);
-            }
-        });
-    };
-
-    // Initialize all components
-    initAuthModals();
-
     // Add CSS animations dynamically
     const style = document.createElement('style');
     style.textContent = `
@@ -376,38 +231,12 @@ document.addEventListener('DOMContentLoaded', function() {
             from { transform: translateX(-50px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-        @keyframes animate__fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes animate__fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(20px); }
-        }
         .slide-in-right {
             animation: slide-in-right 0.5s ease-out forwards;
         }
         .slide-in-left {
             animation: slide-in-left 0.5s ease-out forwards;
         }
-        .animate__fadeIn {
-            animation: animate__fadeIn 0.3s ease-out forwards;
-        }
-        .animate__fadeOut {
-            animation: animate__fadeOut 0.3s ease-out forwards;
-        }
     `;
     document.head.appendChild(style);
-
-    // Add subtle hover effects to service cards
-    document.querySelectorAll('.service-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
-        });
-    });
 });
