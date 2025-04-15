@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         html.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
+        
+        // Add animation to theme toggle
+        themeToggle.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            themeToggle.style.transform = 'scale(1)';
+        }, 200);
     });
 
     // Mobile menu toggle
@@ -61,7 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.body.style.overflow = '';
                 }
                 
-                targetElement.scrollIntoView({
+                // Smooth scroll to target
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
             }
@@ -74,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
             backToTopBtn.style.display = 'flex';
+            backToTopBtn.style.animation = 'fadeIn 0.3s ease-in-out';
         } else {
             backToTopBtn.style.display = 'none';
         }
@@ -117,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             animateStats();
             observer.unobserve(statsSection);
         }
-    });
+    }, { threshold: 0.5 });
     
     if (statsSection) {
         observer.observe(statsSection);
@@ -223,29 +232,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Pulse animation for CTA buttons
-    const pulseButtons = document.querySelectorAll('.pulse');
-    pulseButtons.forEach(button => {
-        button.style.animation = 'pulse 2s infinite';
-    });
+    // Animate elements on scroll
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.approach-item, .stat-card, .feature-card, .algorithm-card, .success-card, .recognition-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    
+                    // Add bounce effect to cards
+                    if (entry.target.classList.contains('stat-card') || 
+                        entry.target.classList.contains('feature-card') ||
+                        entry.target.classList.contains('recognition-card')) {
+                        entry.target.style.animation = 'bounceIn 0.6s ease-out';
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
 
-    // Animate Quantum Analytics cards on scroll
-    const quantumCards = document.querySelectorAll('.algorithm-card, .success-card, .stat-card, .feature-card');
-    const quantumObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
+        elements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(element);
         });
-    }, { threshold: 0.1 });
+    };
 
-    quantumCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        quantumObserver.observe(card);
-    });
+    // Initialize animations
+    animateOnScroll();
 
     // Video thumbnail hover effects
     const videoThumbnails = document.querySelectorAll('.video-thumbnail');
@@ -264,4 +280,63 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Add hover effect to buttons
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', () => {
+            button.style.transform = 'translateY(-3px)';
+            button.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'translateY(0)';
+            button.style.boxShadow = 'none';
+        });
+    });
+
+    // Add animation to recognition cards
+    const recognitionCards = document.querySelectorAll('.recognition-card');
+    recognitionCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const icon = card.querySelector('.recognition-icon');
+            icon.style.transform = 'rotate(15deg) scale(1.1)';
+            icon.style.color = '#3a56d4';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            const icon = card.querySelector('.recognition-icon');
+            icon.style.transform = 'rotate(0) scale(1)';
+            icon.style.color = '#4361ee';
+        });
+    });
 });
+
+// Add CSS animations dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes bounceIn {
+        0% { transform: scale(0.95); opacity: 0; }
+        50% { transform: scale(1.05); }
+        80% { transform: scale(0.98); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0); }
+    }
+`;
+document.head.appendChild(style);
