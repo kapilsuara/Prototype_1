@@ -232,6 +232,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // About/Why/How slider functionality
+    const sliderTabs = document.querySelectorAll('.slider-tab');
+    const slides = document.querySelectorAll('.slide');
+    
+    sliderTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            sliderTabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            
+            // Get the target slide ID
+            const targetSlide = tab.getAttribute('data-tab') + '-slide';
+            
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            // Show target slide
+            document.getElementById(targetSlide).classList.add('active');
+        });
+    });
+
     // Animate elements on scroll
     const animateOnScroll = () => {
         const elements = document.querySelectorAll('.approach-item, .stat-card, .feature-card, .algorithm-card, .success-card, .recognition-card');
