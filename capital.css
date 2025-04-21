@@ -2,7 +2,7 @@
 :root {
     --primary-color: #4361ee;
     --primary-dark: #3a56d4;
-    --secondary-color: #3f37c9;
+    --secondary-color: #7e7ad8;
     --accent-color: #4895ef;
     --light-color: #f8f9fa;
     --dark-color: #212529;
@@ -50,7 +50,7 @@ body {
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
-    color: var(--text-color);
+    color: #ffffff;
 }
 
 /* Buttons */
@@ -195,7 +195,7 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
     font-weight: 500;
     transition: var(--transition);
-    padding: 10px 0;
+    padding: 30px 0;
     position: relative;
 }
 
@@ -361,7 +361,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     gap: 50px;
     margin-bottom: 80px;
-    align-items: center;
+    align-items: start;
 }
 
 .approach-item.reverse {
@@ -1322,4 +1322,5 @@ h1, h2, h3, h4, h5, h6 {
     .algorithm-grid, .success-grid {
         grid-template-columns: 1fr;
     }
+    
 }
