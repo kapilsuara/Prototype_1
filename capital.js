@@ -50,28 +50,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+    // Handle navigation tab clicks
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', function(e) {
             e.preventDefault();
             
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
+            const targetTab = this.getAttribute('data-tab');
+            const sliderTab = document.querySelector(`.slider-tab[data-tab="${targetTab}"]`);
             
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
+            if (sliderTab) {
+                // Click the corresponding slider tab
+                sliderTab.click();
+                
                 // Close mobile menu if open
-                if (navLinks && navLinks.classList.contains('active')) {
+                if (mobileMenuBtn && navLinks.classList.contains('active')) {
                     mobileMenuBtn.classList.remove('active');
                     navLinks.classList.remove('active');
                     document.body.style.overflow = '';
                 }
                 
-                // Smooth scroll to target
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
+                // Scroll to the slider section
+                const sliderSection = document.querySelector('.approach-slider');
+                if (sliderSection) {
+                    window.scrollTo({
+                        top: sliderSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
             }
         });
     });
