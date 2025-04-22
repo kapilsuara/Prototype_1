@@ -16,6 +16,33 @@
     --border-radius: 12px;
 }
 
+/* toggle  */
+
+
+.theme-toggle {
+    width: 100%;                   /* Full width from left to right */
+    background-color: blue;        /* Blue background */
+    color: white;                  /* Icon color */
+    border: none;                  /* No border */
+    padding: 15px 0;               /* Top and bottom padding */
+    border-radius: 0;              /* No border-radius (optional) */
+    cursor: pointer;               /* Pointer cursor on hover */
+    display: flex;                 /* Flex layout */
+    justify-content: center;       /* Center content horizontally */
+    align-items: center;           /* Center content vertically */
+    gap: 10px;                     /* Space between icons */
+    font-size: 18px;               /* Icon size */
+  }
+  
+  .theme-toggle:hover {
+    background-color: #003cb3;     /* Darker blue on hover */
+  }
+  
+  .theme-toggle i {
+    color: rgb(53, 81, 219);                  /* Ensures icons are white on blue */
+  }
+  
+
 /* Base Styles */
 * {
     margin: 0;
