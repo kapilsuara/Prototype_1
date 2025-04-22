@@ -18,10 +18,9 @@ if (!firebase.apps.length) {
 // Initialize Firebase services
 const auth = firebase.auth();
 const database = firebase.database();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 // Make auth and database available globally
 window.auth = auth;
 window.database = database;
-
-// Export the services if using modules
-// export { auth, database };
+window.googleProvider = googleProvider;

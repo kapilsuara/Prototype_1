@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorCloseBtn = document.getElementById('error-close-btn');
     const authButtons = document.getElementById('auth-buttons');
     const userMenu = document.getElementById('user-menu');
+    const googleLoginButtons = document.querySelectorAll('.btn-social.google');
 
     // Show modals
     function showModal(modal) {
@@ -57,7 +58,102 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event listeners for buttons
+    // Handle Google login
+    function handleGoogleLogin() {
+        auth.signInWithPopup(googleProvider)
+            .then((result) => {
+                const user = result.user;
+                
+                // Check if user is new or existing
+                const isNewUser = result.additionalUserInfo.isNewUser;
+                
+                if (isNewUser) {
+                    // Save user data for new users
+                    return database.ref('users/' + user.uid).set({
+                        name: user.displayName,
+                        email: user.email,
+                        createdAt: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        return createDefaultSubscription(user.uid);
+                    });
+                } else {
+                    // Existing user, just ensure they have a subscription
+                    return createDefaultSubscription(user.uid);
+                }
+            })
+            .then(() => {
+                // Redirect to plans page after successful login
+                window.location.href = "plans.html";
+            })
+            .catch((error) => {
+                handleAuthError(error);
+            });
+    }
+
+    // Create default subscription for new users
+    function createDefaultSubscription(userId) {
+        return database.ref('users/' + userId + '/subscriptions').once('value').then(snapshot => {
+            if (!snapshot.exists()) {
+                const defaultSubscription = {
+                    basic: {
+                        status: 'active',
+                        startDate: new Date().toISOString(),
+                        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
+                    }
+                };
+                return database.ref('users/' + userId + '/subscriptions').update(defaultSubscription);
+            }
+        });
+    }
+
+    // Handle logout
+    function handleLogout() {
+        auth.signOut().then(() => {
+            // Redirect to home page after logout
+            window.location.href = "index.html";
+        }).catch((error) => {
+            console.error("Logout error:", error);
+            showErrorModal("Failed to logout. Please try again.");
+        });
+    }
+
+    // Handle auth errors
+    function handleAuthError(error, messageElement = null) {
+        let errorMessage = 'Authentication failed. Please try again.';
+        
+        switch(error.code) {
+            case 'auth/email-already-in-use':
+                errorMessage = 'This email is already registered.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Please enter a valid email address.';
+                break;
+            case 'auth/weak-password':
+                errorMessage = 'Password should be at least 6 characters.';
+                break;
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+                errorMessage = 'Invalid email or password.';
+                break;
+            case 'auth/operation-not-allowed':
+                errorMessage = 'Email/password accounts are not enabled.';
+                break;
+            case 'auth/popup-closed-by-user':
+                errorMessage = 'Sign in process was canceled.';
+                break;
+            default:
+                console.error("Auth error:", error);
+        }
+        
+        if (messageElement) {
+            messageElement.textContent = errorMessage;
+            messageElement.classList.add('error');
+        } else {
+            showErrorModal(errorMessage);
+        }
+    }
+
+    // Event listeners
     if (loginBtn) loginBtn.addEventListener('click', () => showModal(loginModal));
     if (signupBtn) signupBtn.addEventListener('click', () => showModal(signupModal));
     if (heroSignupBtn) heroSignupBtn.addEventListener('click', () => showModal(signupModal));
@@ -95,6 +191,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (successCloseBtn) successCloseBtn.addEventListener('click', () => hideModal(successModal));
     if (errorCloseBtn) errorCloseBtn.addEventListener('click', () => hideModal(errorModal));
 
+    // Google login buttons
+    googleLoginButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleGoogleLogin();
+        });
+    });
+
     // Login form submission
     if (loginForm) loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -107,7 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Signed in
                 const user = userCredential.user;
                 loginMessage.textContent = "Login successful! Redirecting...";
-                loginMessage.style.color = "green";
+                loginMessage.classList.remove('error');
+                loginMessage.classList.add('success');
                 
                 // Create default subscription if none exists
                 createDefaultSubscription(user.uid);
@@ -134,7 +239,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validate passwords match
         if (password !== confirm) {
             signupMessage.textContent = "Passwords don't match!";
-            signupMessage.style.color = "red";
+            signupMessage.classList.remove('success');
+            signupMessage.classList.add('error');
             return;
         }
         
@@ -168,63 +274,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 handleAuthError(error, signupMessage);
             });
     });
-
-    // Create default subscription for new users
-    function createDefaultSubscription(userId) {
-        const defaultSubscription = {
-            basic: {
-                status: 'active',
-                startDate: new Date().toISOString(),
-                endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
-            }
-        };
-        
-        return database.ref('users/' + userId + '/subscriptions').update(defaultSubscription);
-    }
-
-    // Handle logout
-    function handleLogout() {
-        auth.signOut().then(() => {
-            // Redirect to home page after logout
-            window.location.href = "index.html";
-        }).catch((error) => {
-            console.error("Logout error:", error);
-            showErrorModal("Failed to logout. Please try again.");
-        });
-    }
-
-    // Handle auth errors
-    function handleAuthError(error, messageElement = null) {
-        let errorMessage = 'Authentication failed. Please try again.';
-        
-        switch(error.code) {
-            case 'auth/email-already-in-use':
-                errorMessage = 'This email is already registered.';
-                break;
-            case 'auth/invalid-email':
-                errorMessage = 'Please enter a valid email address.';
-                break;
-            case 'auth/weak-password':
-                errorMessage = 'Password should be at least 6 characters.';
-                break;
-            case 'auth/user-not-found':
-            case 'auth/wrong-password':
-                errorMessage = 'Invalid email or password.';
-                break;
-            case 'auth/operation-not-allowed':
-                errorMessage = 'Email/password accounts are not enabled.';
-                break;
-            default:
-                console.error("Auth error:", error);
-        }
-        
-        if (messageElement) {
-            messageElement.textContent = errorMessage;
-            messageElement.style.color = "red";
-        } else {
-            showErrorModal(errorMessage);
-        }
-    }
 
     // Check auth state
     auth.onAuthStateChanged((user) => {
