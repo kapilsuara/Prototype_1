@@ -460,7 +460,8 @@ p {
 }
 
 .consistency-section {
-    margin: 40px 0;
+    margin-top: 40px 0;
+    margin-bottom: 10px;
     padding: 30px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: var(--border-radius);
