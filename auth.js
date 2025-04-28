@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // DOM Elements
     const loginBtn = document.getElementById('login-btn');
     const signupBtn = document.getElementById('signup-btn');
@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorCloseBtn = document.getElementById('error-close-btn');
     const authButtons = document.getElementById('auth-buttons');
     const userMenu = document.getElementById('user-menu');
+    const googleLoginBtn = document.getElementById('google-login-btn');
+    const googleSignupBtn = document.getElementById('google-signup-btn');
 
     // Show modals
     function showModal(modal) {
@@ -63,29 +65,37 @@ document.addEventListener('DOMContentLoaded', function() {
     if (heroSignupBtn) heroSignupBtn.addEventListener('click', () => showModal(signupModal));
     if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
 
+    // Google Sign-In/Sign-Up handlers
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', () => handleGoogleAuth('login'));
+    }
+    if (googleSignupBtn) {
+        googleSignupBtn.addEventListener('click', () => handleGoogleAuth('signup'));
+    }
+
     // Close modals when clicking X
     closeBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             const modal = this.closest('.modal');
             hideModal(modal);
         });
     });
 
     // Close modals when clicking outside
-    window.addEventListener('click', function(e) {
+    window.addEventListener('click', function (e) {
         if (e.target.classList.contains('modal')) {
             hideModal(e.target);
         }
     });
 
     // Switch between login and signup
-    if (switchToSignup) switchToSignup.addEventListener('click', function(e) {
+    if (switchToSignup) switchToSignup.addEventListener('click', function (e) {
         e.preventDefault();
         hideModal(loginModal);
         showModal(signupModal);
     });
 
-    if (switchToLogin) switchToLogin.addEventListener('click', function(e) {
+    if (switchToLogin) switchToLogin.addEventListener('click', function (e) {
         e.preventDefault();
         hideModal(signupModal);
         showModal(loginModal);
@@ -96,22 +106,29 @@ document.addEventListener('DOMContentLoaded', function() {
     if (errorCloseBtn) errorCloseBtn.addEventListener('click', () => hideModal(errorModal));
 
     // Login form submission
-    if (loginForm) loginForm.addEventListener('submit', function(e) {
+    if (loginForm) loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
-        
+
+        // Validate email format
+        if (!validateEmail(email)) {
+            loginMessage.textContent = "Please enter a valid email address.";
+            loginMessage.style.color = "red";
+            return;
+        }
+
         auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
                 loginMessage.textContent = "Login successful! Redirecting...";
                 loginMessage.style.color = "green";
-                
+
                 // Create default subscription if none exists
                 createDefaultSubscription(user.uid);
-                
+
                 // Redirect to plans page after successful login
                 setTimeout(() => {
                     window.location.href = "plans.html";
@@ -123,50 +140,66 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Signup form submission
-    if (signupForm) signupForm.addEventListener('submit', function(e) {
+    if (signupForm) signupForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         const name = document.getElementById('signup-name').value;
         const email = document.getElementById('signup-email').value;
         const password = document.getElementById('signup-password').value;
         const confirm = document.getElementById('signup-confirm').value;
-        
+
+        // Validate email format
+        if (!validateEmail(email)) {
+            signupMessage.textContent = "Please enter a valid email address.";
+            signupMessage.style.color = "red";
+            return;
+        }
+
         // Validate passwords match
         if (password !== confirm) {
             signupMessage.textContent = "Passwords don't match!";
             signupMessage.style.color = "red";
             return;
         }
-        
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed up
-                const user = userCredential.user;
-                
-                // Save additional user data to database
-                return database.ref('users/' + user.uid).set({
-                    name: name,
-                    email: email,
-                    createdAt: firebase.database.ServerValue.TIMESTAMP
-                }).then(() => {
-                    // Create default subscription
-                    return createDefaultSubscription(user.uid);
-                }).then(() => {
-                    // Show success and clear form
-                    signupMessage.textContent = "";
-                    signupForm.reset();
-                    hideModal(signupModal);
-                    showSuccessModal();
-                    
-                    // Redirect to plans page after delay
-                    setTimeout(() => {
-                        window.location.href = "plans.html";
-                    }, 2000);
+
+        // Check if email exists before creating account
+        checkEmailExists(email).then((exists) => {
+            if (exists) {
+                signupMessage.textContent = "This email is already registered.";
+                signupMessage.style.color = "red";
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed up
+                    const user = userCredential.user;
+
+                    // Save additional user data to database
+                    return database.ref('users/' + user.uid).set({
+                        name: name,
+                        email: email,
+                        createdAt: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        // Create default subscription
+                        return createDefaultSubscription(user.uid);
+                    }).then(() => {
+                        // Show success and clear form
+                        signupMessage.textContent = "";
+                        signupForm.reset();
+                        hideModal(signupModal);
+                        showSuccessModal();
+
+                        // Redirect to plans page after delay
+                        setTimeout(() => {
+                            window.location.href = "plans.html";
+                        }, 2000);
+                    });
+                })
+                .catch((error) => {
+                    handleAuthError(error, signupMessage);
                 });
-            })
-            .catch((error) => {
-                handleAuthError(error, signupMessage);
-            });
+        });
     });
 
     // Create default subscription for new users
@@ -178,8 +211,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
             }
         };
-        
+
         return database.ref('users/' + userId + '/subscriptions').update(defaultSubscription);
+    }
+
+    // Handle Google authentication
+    function handleGoogleAuth(action) {
+        auth.signInWithPopup(googleProvider)
+            .then((result) => {
+                const user = result.user;
+                
+                // Check if this is a new user (signup) or existing (login)
+                if (action === 'signup' && result.additionalUserInfo.isNewUser) {
+                    // Save user data to database for new signups
+                    return database.ref('users/' + user.uid).set({
+                        name: user.displayName,
+                        email: user.email,
+                        createdAt: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        // Create default subscription
+                        return createDefaultSubscription(user.uid);
+                    }).then(() => {
+                        showSuccessModal('Google sign-up successful!');
+                        setTimeout(() => {
+                            window.location.href = "plans.html";
+                        }, 2000);
+                    });
+                } else {
+                    // For logins or existing users
+                    showSuccessModal('Google login successful!');
+                    setTimeout(() => {
+                        window.location.href = "plans.html";
+                    }, 1000);
+                }
+            })
+            .catch((error) => {
+                handleAuthError(error);
+            });
     }
 
     // Handle logout
@@ -193,11 +261,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Check if email exists in database
+    function checkEmailExists(email) {
+        return new Promise((resolve) => {
+            auth.fetchSignInMethodsForEmail(email)
+                .then((signInMethods) => {
+                    resolve(signInMethods.length > 0);
+                })
+                .catch(() => {
+                    resolve(false);
+                });
+        });
+    }
+
+    // Validate email format
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
     // Handle auth errors
     function handleAuthError(error, messageElement = null) {
         let errorMessage = 'Authentication failed. Please try again.';
-        
-        switch(error.code) {
+
+        switch (error.code) {
             case 'auth/email-already-in-use':
                 errorMessage = 'This email is already registered.';
                 break;
@@ -208,16 +295,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorMessage = 'Password should be at least 6 characters.';
                 break;
             case 'auth/user-not-found':
+                errorMessage = 'No account found with this email.';
+                break;
             case 'auth/wrong-password':
                 errorMessage = 'Invalid email or password.';
                 break;
             case 'auth/operation-not-allowed':
                 errorMessage = 'Email/password accounts are not enabled.';
                 break;
+            case 'auth/popup-closed-by-user':
+                errorMessage = 'Google sign-in was cancelled.';
+                break;
             default:
                 console.error("Auth error:", error);
         }
-        
+
         if (messageElement) {
             messageElement.textContent = errorMessage;
             messageElement.style.color = "red";
@@ -229,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check auth state
     auth.onAuthStateChanged((user) => {
         toggleAuthUI(user);
-        
+
         if (user) {
             // User is signed in
             console.log("User is logged in:", user.email);

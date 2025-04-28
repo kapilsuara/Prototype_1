@@ -933,4 +933,15 @@ footer {
   .testimonial-card {
       padding: 1.5rem;
   }
+
+  .logo-link {
+    text-decoration: none !important; /* Removes underline */
+    color: inherit; /* Keeps original text color */
+    display: flex; /* Maintains layout */
+    align-items: center; /* Centers vertically */
+}
+
+.logo-link:hover {
+    text-decoration: none !important; /* Ensures no underline on hover */
+}
 }

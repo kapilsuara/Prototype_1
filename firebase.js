@@ -1,14 +1,13 @@
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCPcWiiOfqx-1lQ8eNIvsmV3tdzH72Mgtg",
-    authDomain: "loginuser-950fb.firebaseapp.com",
-    projectId: "loginuser-950fb",
-    storageBucket: "loginuser-950fb.appspot.com",
-    messagingSenderId: "575244003228",
-    appId: "1:575244003228:web:c969df6c757fdf5a948a59",
-    measurementId: "G-PS62W73LSN",
-    databaseURL: "https://loginuser-950fb-default-rtdb.firebaseio.com/"
-};
+    apiKey: "AIzaSyBp3URYWEW1AQgPC734BqN1zLQj7HaQ2yo",
+    authDomain: "moneychoicewebsite.firebaseapp.com",
+    projectId: "moneychoicewebsite",
+    storageBucket: "moneychoicewebsite.firebasestorage.app",
+    messagingSenderId: "395104519801",
+    appId: "1:395104519801:web:b918492f3faa603f9676a8",
+    measurementId: "G-XMW5HM29RV"
+  };
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -18,10 +17,12 @@ if (!firebase.apps.length) {
 // Initialize Firebase services
 const auth = firebase.auth();
 const database = firebase.database();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 // Make auth and database available globally
 window.auth = auth;
 window.database = database;
+window.googleProvider = googleProvider;
 
 // Export the services if using modules
-// export { auth, database };
+// export { auth, database, googleProvider };

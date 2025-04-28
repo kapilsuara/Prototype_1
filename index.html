@@ -64,9 +64,11 @@
     <!-- Header with Auth Buttons -->
     <header class="glass-header">
         <div class="container">
-            <div class="logo">
-                <span class="logo-icon"><i class="fas fa-crown"></i></span>
-                <span>MoneyChoice</span>
+            <div class="logo" id="logo-top">
+                <a href="#" class="logo-link" style="text-decoration: none;">
+                    <span class="logo-icon"><i class="fas fa-crown"></i></span>
+                    <span class="logo-text">MONEYCHOICE</span>
+                </a>
             </div>
             <nav>
                 <ul class="nav-links">
@@ -304,121 +306,119 @@
 
     <!-- Auth Modals -->
     <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div class="modal-header">
-                <h2>Welcome Back</h2>
-                <p>Login to access your account</p>
-            </div>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="login-email" placeholder="Enter your email" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="login-password" placeholder="Enter your password" required>
-                    </div>
-                </div>
-                <div class="form-options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember-me">
-                        <label for="remember-me">Remember me</label>
-                    </div>
-                    <a href="#" class="forgot-password">Forgot password?</a>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Login <i class="fas fa-arrow-right"></i></button>
-                <div class="auth-message" id="login-message"></div>
-            </form>
-            <div class="auth-footer">
-                <p>Don't have an account? <a href="#" id="switch-to-signup">Sign up</a></p>
-            </div>
-            <div class="social-login">
-                <p>Or login with</p>
-                <div class="social-buttons">
-                    <button type="button" class="btn-social google">
-                        <i class="fab fa-google"></i> Google
-                    </button>
-                    <!-- <button type="button" class="btn-social facebook">
-                        <i class="fab fa-facebook-f"></i> Facebook
-                    </button> -->
-                </div>
-            </div>
-        </div>
-    </div>
+   <!-- Signup Modal -->
 
-    <!-- Signup Modal -->
-    <div id="signup-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div class="modal-header">
-                <h2>Create Your Account</h2>
-                <p>Join MoneyChoice today</p>
+   <!-- Login Modal -->
+<div id="login-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="modal-header">
+            <h2>Welcome Back</h2>
+            <p>Login to your account</p>
+        </div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="login-email" placeholder="Enter your email" required>
+                </div>
             </div>
-            <form id="signup-form">
-                <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="signup-name" placeholder="Enter your full name" required>
-                    </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
                 </div>
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="signup-email" placeholder="Enter your email" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="signup-password" placeholder="Create a password" required>
-                    </div>
-                    <div class="password-strength">
-                        <div class="strength-bar"></div>
-                        <span class="strength-text">Weak</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="signup-confirm">Confirm Password</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
-                    </div>
-                </div>
-                <div class="form-options">
-                    <div class="terms-agree">
-                        <input type="checkbox" id="agree-terms" required>
-                        <label for="agree-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Create Account <i class="fas fa-arrow-right"></i></button>
-                <div class="auth-message" id="signup-message"></div>
-            </form>
-            <div class="auth-footer">
-                <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
             </div>
-            <div class="social-login">
-                <p>Or sign up with</p>
-                <div class="social-buttons">
-                    <button type="button" class="btn-social google">
-                        <i class="fab fa-google"></i> Google
-                    </button>
-                    <!-- <button type="button" class="btn-social facebook">
-                        <i class="fab fa-facebook-f"></i> Facebook
-                    </button> -->
+            <div class="form-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Remember me</label>
                 </div>
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login <i class="fas fa-arrow-right"></i></button>
+            <div class="auth-message" id="login-message"></div>
+        </form>
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="#" id="switch-to-signup">Sign up</a></p>
+        </div>
+        <div class="social-login">
+            <p>Or login with</p>
+            <div class="social-buttons">
+                <button id="google-login-btn" type="button" class="btn-social google">
+                    <i class="fab fa-google"></i> Google
+                </button>
             </div>
         </div>
     </div>
+</div>
+<div id="signup-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="modal-header">
+            <h2>Create Your Account</h2>
+            <p>Join MoneyChoice today</p>
+        </div>
+        <form id="signup-form">
+            <!-- Your existing form fields remain the same -->
+            <div class="form-group">
+                <label for="signup-name">Full Name</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="signup-password" placeholder="Create a password" required>
+                </div>
+                <div class="password-strength">
+                    <div class="strength-bar"></div>
+                    <span class="strength-text">Weak</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="signup-confirm">Confirm Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+                </div>
+            </div>
+            <div class="form-options">
+                <div class="terms-agree">
+                    <input type="checkbox" id="agree-terms" required>
+                    <label for="agree-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Account <i class="fas fa-arrow-right"></i></button>
+            <div class="auth-message" id="signup-message"></div>
+        </form>
+        <div class="auth-footer">
+            <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+        </div>
+        <div class="social-login">
+            <p>Or sign up with</p>
+            <div class="social-buttons">
+                <button id="google-signup-btn" type="button" class="btn-social google">
+                    <i class="fab fa-google"></i> Google
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 
     <!-- Success Modal -->
     <div id="success-modal" class="modal">
@@ -546,6 +546,23 @@
                 }
             });
         });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Existing code...
+        
+        // Add logo click handler
+        document.getElementById('logo-top')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Rest of your existing JavaScript...
+    });
     </script>
 </body>
 </html>

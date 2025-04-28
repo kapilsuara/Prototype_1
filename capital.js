@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme toggle functionality
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
+
+    
     
     // Check for saved theme preference or use preferred color scheme
     const savedTheme = localStorage.getItem('theme') || 
