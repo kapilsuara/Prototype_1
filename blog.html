@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyChoice - Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="main.css">
+    <style>
+        /* Blog specific styles */
+        .blog-hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .blog-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .blog-hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+        
+        .blog-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .blog-search {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .blog-search input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .blog-search button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .blog-search button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .blog-container {
+            padding: 4rem 0;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .blog-card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .blog-card:hover .blog-card-image img {
+            transform: scale(1.1);
+        }
+        
+        .blog-card-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-card-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+        
+        .blog-card-meta span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        
+        .blog-card-meta i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .blog-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .blog-card p {
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .blog-card-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .blog-card-link i {
+            margin-left: 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .blog-card-link:hover {
+            color: var(--primary-dark);
+        }
+        
+        .blog-card-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        .blog-categories {
+            margin-bottom: 3rem;
+        }
+        
+        .categories-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .category-btn {
+            padding: 0.5rem 1.25rem;
+            background: rgba(67, 97, 238, 0.1);
+            border: none;
+            border-radius: 50px;
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid var(--light-gray);
+            color: var(--dark-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pagination-btn:hover, .pagination-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blog-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Auth Buttons -->
+    <header class="glass-header">
+        <div class="container">
+            <div class="logo" id="logo-top">
+                <a href="index.html" class="logo-link" style="text-decoration: none;">
+                    <span class="logo-icon"><i class="fas fa-crown"></i></span>
+                    <span class="logo-text">MONEYCHOICE</span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="capital.html">MoneyChoice Capital</a></li>
+                    <li><a href="biz.html">MoneyChoice Biz</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <!-- <li id="auth-buttons">
+                        <button type="button" class="btn btn-outline" id="login-btn">Login</button>
+                        <button type="button" class="btn btn-primary" id="signup-btn">Sign Up</button>
+                    </li> -->
+                    <li id="user-menu" style="display:none;">
+                        <a href="plans.html" class="btn btn-outline">My Account</a>
+                        <button type="button" class="btn btn-primary" id="logout-btn">Logout</button>
+                    </li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Blog Hero Section -->
+    <section class="blog-hero">
+        <div class="container">
+            <h1 class="animate__animated animate__fadeInDown">MoneyChoice Blog</h1>
+            <p class="animate__animated animate__fadeInDown animate__delay-1s">Insights, strategies and updates to help you grow your business and investments</p>
+            <div class="blog-search animate__animated animate__fadeInUp animate__delay-2s">
+                <input type="text" placeholder="Search articles...">
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Categories -->
+    <section class="blog-categories">
+        <div class="container">
+            <div class="categories-list">
+                <button class="category-btn active">All</button>
+                <button class="category-btn">Investing</button>
+                <button class="category-btn">Business Growth</button>
+                <button class="category-btn">Market Trends</button>
+                <button class="category-btn">Financial Tips</button>
+                <button class="category-btn">Success Stories</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts Grid -->
+    <section class="blog-container">
+        <div class="container">
+            <div class="blog-grid">
+                <!-- Blog Post 1 -->
+                <article class="blog-card animate__animated animate__fadeIn">
+                    <div class="blog-card-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Financial Analytics">
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-calendar"></i> June 15, 2023</span>
+                            <span><i class="far fa-eye"></i> 1.2K</span>
+                        </div>
+                        <h3>How to Analyze Market Trends Like a Pro</h3>
+                        <p>Learn the techniques professional investors use to identify and capitalize on emerging market trends before they become mainstream.</p>
+                        <a href="blog-post.html" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="blog-card animate__animated animate__fadeIn">
+                    <div class="blog-card-image">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1511&q=80" alt="Investment Strategies">
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-calendar"></i> May 28, 2023</span>
+                            <span><i class="far fa-eye"></i> 2.4K</span>
+                        </div>
+                        <h3>5 Investment Strategies for Volatile Markets</h3>
+                        <p>Discover proven strategies to protect your portfolio and find opportunities when markets are unpredictable.</p>
+                        <a href="blog-post.html" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="blog-card animate__animated animate__fadeIn">
+                    <div class="blog-card-image">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Business Growth">
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-calendar"></i> May 10, 2023</span>
+                            <span><i class="far fa-eye"></i> 3.1K</span>
+                        </div>
+                        <h3>Scaling Your Business: When and How to Expand</h3>
+                        <p>Learn the signs that your business is ready for growth and the best approaches to scale successfully.</p>
+                        <a href="blog-post.html" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 4 -->
+                <article class="blog-card animate__animated animate__fadeIn">
+                    <div class="blog-card-image">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Financial Planning">
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-calendar"></i> April 22, 2023</span>
+                            <span><i class="far fa-eye"></i> 1.8K</span>
+                        </div>
+                        <h3>The Complete Guide to Financial Planning in 2023</h3>
+                        <p>Everything you need to know to create a robust financial plan that adapts to current economic conditions.</p>
+                        <a href="blog-post.html" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 5 -->
+                <article class="blog-card animate__animated animate__fadeIn">
+                    <div class="blog-card-image">
+                        <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1405&q=80" alt="Success Story">
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-calendar"></i> April 5, 2023</span>
+                            <span><i class="far fa-eye"></i> 4.2K</span>
+                        </div>
+                        <h3>From Startup to $10M: A Founder's Journey</h3>
+                        <p>An interview with a MoneyChoice client who grew their business from zero to eight figures in just 3 years.</p>
+                        <a href="blog-post.html" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 6 -->
+                <article class="blog-card animate__animated animate__fadeIn">
+                    <div class="blog-card-image">
+                        <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Tax Strategies">
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-calendar"></i> March 18, 2023</span>
+                            <span><i class="far fa-eye"></i> 2.7K</span>
+                        </div>
+                        <h3>Tax Optimization Strategies for Small Businesses</h3>
+                        <p>Legal ways to minimize your tax burden and keep more of your hard-earned profits.</p>
+                        <a href="blog-post.html" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="pagination-btn disabled"><i class="fas fa-chevron-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn">4</button>
+                <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <div class="logo">
+                        <span class="logo-icon"><i class="fas fa-crown"></i></span>
+                        <span>MoneyChoice</span>
+                    </div>
+                    <p>Your comprehensive solution for business growth and capital management.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="capital.html">MoneyChoice Capital</a></li>
+                        <li><a href="biz.html">MoneyChoice Biz</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="plans.html">Plans</a></li>
+                    </ul>
+                </div>
+                <!-- <div class="footer-col">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div> -->
+                <!-- <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div> -->
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 MoneyChoice. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script src="main.js"></script>
+    <script>
+        // Initialize animations
+        new WOW().init();
+        
+        // Blog category filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    // Here you would typically filter blog posts by category
+                    // For now we're just toggling the active class
+                });
+            });
+            
+            // Pagination functionality
+            const paginationBtns = document.querySelectorAll('.pagination-btn:not(.disabled)');
+            
+            paginationBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if(this.classList.contains('active')) return;
+                    
+                    document.querySelector('.pagination-btn.active').classList.remove('active');
+                    this.classList.add('active');
+                    // Here you would typically load the corresponding page of blog posts
+                });
+            });
+            
+            // Blog search functionality
+            const searchForm = document.querySelector('.blog-search');
+            
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const searchTerm = this.querySelector('input').value.trim();
+                if(searchTerm) {
+                    // Here you would typically search blog posts and display results
+                    console.log('Searching for:', searchTerm);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
