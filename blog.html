@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="blog.css">
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
+
 <body>
     <!-- Header -->
     <header class="glass-header">
@@ -129,14 +133,34 @@
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBp3URYWEW1AQgPC734BqN1zLQj7HaQ2yo",
+            authDomain: "moneychoicewebsite.firebaseapp.com",
+            databaseURL: "https://moneychoicewebsite-default-rtdb.firebaseio.com",
+            projectId: "moneychoicewebsite",
+            storageBucket: "moneychoicewebsite.appspot.com",
+            messagingSenderId: "395104519801",
+            appId: "1:395104519801:web:b918492f3faa603f9676a8"
+        };
+
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase initialization failed:', error);
+            showErrorState('Failed to initialize Firebase');
+        }
+
+        const database = firebase.database();
+
         // Blog functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // API endpoint for blog posts (replace with your actual endpoint)
-            const API_URL = '/api/blog/posts';
+            const POSTS_PER_PAGE = 6;
             let currentPage = 1;
             let currentCategory = 'all';
             let currentSearchTerm = '';
-            let postsPerPage = 6;
             let allPosts = [];
             
             // DOM elements
@@ -149,94 +173,102 @@
             // Initial load
             fetchBlogPosts();
             
-            // Fetch blog posts from API
-            async function fetchBlogPosts() {
-                try {
-                    // Show loading state
-                    blogGrid.innerHTML = `
-                        <div class="loading-posts">
-                            <div class="loading-spinner"></div>
-                            <p>Loading articles from our knowledge base...</p>
-                        </div>
-                    `;
+            // Fetch blog posts from Firebase
+            function fetchBlogPosts() {
+                showLoadingState();
+                
+                database.ref('blogs').once('value')
+                    .then((snapshot) => {
+                        if (!snapshot.exists()) {
+                            showNoResults();
+                            return;
+                        }
+                        
+                        const postsData = snapshot.val();
+                        allPosts = Object.entries(postsData).map(([key, value]) => ({
+                            id: key,
+                            ...value,
+                            // Ensure required fields exist
+                            title: value.title || 'Untitled Post',
+                            excerpt: value.excerpt || '',
+                            tags: value.tags || [],
+                            status: value.status || 'published',
+                            createdAt: value.createdAt || Date.now(),
+                            views: value.views || 0,
+                            image_url: value.image_url || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80'
+                        })).filter(post => post.status === 'published');
+                        
+                        if (allPosts.length === 0) {
+                            showNoResults();
+                        } else {
+                            const filteredPosts = filterPosts(allPosts);
+                            displayPosts(paginatePosts(filteredPosts));
+                            setupPagination(filteredPosts.length);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching blog posts:', error);
+                        showErrorState('Failed to load blog posts from Firebase');
+                    });
+            }
+            
+            // Filter posts based on category and search term
+            function filterPosts(posts) {
+                return posts.filter(post => {
+                    // Filter by category (using tags)
+                    const categoryMatch = currentCategory === 'all' || 
+                                        post.tags.includes(currentCategory);
                     
-                    // Fetch posts from backend API
-                    const response = await fetch(`${API_URL}?page=${currentPage}&limit=${postsPerPage}&category=${currentCategory}&search=${encodeURIComponent(currentSearchTerm)}`);
+                    // Filter by search term
+                    const searchTerm = currentSearchTerm.toLowerCase();
+                    const searchMatch = !currentSearchTerm || 
+                                      post.title.toLowerCase().includes(searchTerm) ||
+                                      (post.content && post.content.toLowerCase().includes(searchTerm)) ||
+                                      post.excerpt.toLowerCase().includes(searchTerm);
                     
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch blog posts');
-                    }
-                    
-                    const data = await response.json();
-                    allPosts = data.posts;
-                    
-                    if (allPosts.length === 0) {
-                        showNoResults();
-                    } else {
-                        displayPosts(allPosts);
-                        setupPagination(data.totalPosts);
-                    }
-                    
-                } catch (error) {
-                    console.error('Error fetching blog posts:', error);
-                    showErrorState();
-                }
+                    return categoryMatch && searchMatch;
+                });
+            }
+            
+            // Paginate the filtered posts
+            function paginatePosts(posts) {
+                // Sort posts by date (newest first)
+                posts.sort((a, b) => b.createdAt - a.createdAt);
+                
+                const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+                const endIndex = startIndex + POSTS_PER_PAGE;
+                
+                return posts.slice(startIndex, endIndex);
             }
             
             // Display posts in the grid
             function displayPosts(posts) {
                 blogGrid.innerHTML = '';
                 
-                // Sort posts by date (newest first)
-                posts.sort((a, b) => new Date(b.publish_date) - new Date(a.publish_date));
-                
-                // Check for featured post (first post in the array)
-                const featuredPost = posts[0].is_featured ? posts[0] : null;
-                
-                if (featuredPost) {
-                    // Create featured post card
-                    blogGrid.innerHTML += `
-                        <article class="blog-card featured-post animate__animated animate__fadeIn">
-                            <div class="blog-card-image">
-                                <img src="${featuredPost.image_url}" alt="${featuredPost.title}">
-                            </div>
-                            <div class="blog-card-content">
-                                <div class="blog-card-meta">
-                                    <span><i class="far fa-calendar"></i> ${formatDate(featuredPost.publish_date)}</span>
-                                    <span><i class="far fa-eye"></i> ${featuredPost.views.toLocaleString()}</span>
-                                    <span class="category-tag" style="background: ${getCategoryColor(featuredPost.category)}">
-                                        ${getCategoryName(featuredPost.category)}
-                                    </span>
-                                </div>
-                                <h3>${featuredPost.title}</h3>
-                                <p>${featuredPost.excerpt}</p>
-                                <a href="/blog/${featuredPost.slug}" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </article>
-                    `;
-                    
-                    // Remove featured post from regular posts
-                    posts = posts.slice(1);
+                if (posts.length === 0) {
+                    showNoResults();
+                    return;
                 }
                 
-                // Create regular post cards
                 posts.forEach(post => {
+                    const category = post.tags.length > 0 ? post.tags[0] : 'uncategorized';
+                    
                     blogGrid.innerHTML += `
                         <article class="blog-card animate__animated animate__fadeIn">
                             <div class="blog-card-image">
-                                <img src="${post.image_url}" alt="${post.title}">
+                                <img src="${post.image_url}" alt="${post.title}" loading="lazy">
                             </div>
                             <div class="blog-card-content">
                                 <div class="blog-card-meta">
-                                    <span><i class="far fa-calendar"></i> ${formatDate(post.publish_date)}</span>
+                                    <span><i class="far fa-calendar"></i> ${formatDate(post.createdAt)}</span>
                                     <span><i class="far fa-eye"></i> ${post.views.toLocaleString()}</span>
-                                    <span class="category-tag" style="background: ${getCategoryColor(post.category)}">
-                                        ${getCategoryName(post.category)}
+                                    <span class="category-tag" style="background: ${getCategoryColor(category)}">
+                                        ${getCategoryName(category)}
                                     </span>
                                 </div>
                                 <h3>${post.title}</h3>
                                 <p>${post.excerpt}</p>
-                                <a href="/blog/${post.slug}" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                                <a href="/blog/${post.id}" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </article>
                     `;
@@ -244,52 +276,89 @@
             }
             
             // Set up pagination
-            function setupPagination(totalPosts) {
-                const totalPages = Math.ceil(totalPosts / postsPerPage);
+            function setupPagination(totalFilteredPosts) {
+                const totalPages = Math.ceil(totalFilteredPosts / POSTS_PER_PAGE);
+                pagination.innerHTML = '';
                 
-                if (totalPages <= 1) {
-                    pagination.innerHTML = '';
-                    return;
-                }
-                
-                let paginationHTML = '';
+                if (totalPages <= 1) return;
                 
                 // Previous button
-                paginationHTML += `
-                    <button class="pagination-btn ${currentPage === 1 ? 'disabled' : ''}" 
-                            onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                `;
+                const prevBtn = createPaginationButton(
+                    '<i class="fas fa-chevron-left"></i>',
+                    currentPage > 1 ? currentPage - 1 : null,
+                    currentPage === 1
+                );
+                pagination.appendChild(prevBtn);
                 
                 // Page numbers
-                for (let i = 1; i <= totalPages; i++) {
-                    paginationHTML += `
-                        <button class="pagination-btn ${i === currentPage ? 'active' : ''}" 
-                                onclick="changePage(${i})">
-                            ${i}
-                        </button>
-                    `;
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                // Adjust if we're at the end
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                // First page and ellipsis
+                if (startPage > 1) {
+                    pagination.appendChild(createPaginationButton(1, 1));
+                    if (startPage > 2) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'pagination-ellipsis';
+                        ellipsis.textContent = '...';
+                        pagination.appendChild(ellipsis);
+                    }
+                }
+                
+                // Page buttons
+                for (let i = startPage; i <= endPage; i++) {
+                    pagination.appendChild(createPaginationButton(
+                        i,
+                        i,
+                        i === currentPage
+                    ));
+                }
+                
+                // Last page and ellipsis
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'pagination-ellipsis';
+                        ellipsis.textContent = '...';
+                        pagination.appendChild(ellipsis);
+                    }
+                    pagination.appendChild(createPaginationButton(totalPages, totalPages));
                 }
                 
                 // Next button
-                paginationHTML += `
-                    <button class="pagination-btn ${currentPage === totalPages ? 'disabled' : ''}" 
-                            onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                `;
-                
-                pagination.innerHTML = paginationHTML;
+                const nextBtn = createPaginationButton(
+                    '<i class="fas fa-chevron-right"></i>',
+                    currentPage < totalPages ? currentPage + 1 : null,
+                    currentPage === totalPages
+                );
+                pagination.appendChild(nextBtn);
             }
             
-            // Change page function (needs to be global for onclick)
-            window.changePage = function(page) {
-                if (page < 1 || page > Math.ceil(allPosts.length / postsPerPage)) return;
-                currentPage = page;
-                fetchBlogPosts();
-                window.scrollTo({ top: blogGrid.offsetTop - 100, behavior: 'smooth' });
-            };
+            // Helper function to create pagination buttons
+            function createPaginationButton(text, pageNumber, isDisabled = false) {
+                const button = document.createElement('button');
+                button.className = 'pagination-btn';
+                button.innerHTML = text;
+                
+                if (isDisabled) {
+                    button.disabled = true;
+                    button.classList.add('disabled');
+                } else {
+                    button.addEventListener('click', () => {
+                        currentPage = pageNumber;
+                        fetchBlogPosts();
+                        window.scrollTo({ top: blogGrid.offsetTop - 100, behavior: 'smooth' });
+                    });
+                }
+                
+                return button;
+            }
             
             // Category filter
             categoryBtns.forEach(btn => {
@@ -311,9 +380,16 @@
             });
             
             // Helper functions
-            function formatDate(dateString) {
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                return new Date(dateString).toLocaleDateString('en-US', options);
+            function formatDate(timestamp) {
+                try {
+                    const date = new Date(Number(timestamp));
+                    if (isNaN(date.getTime())) return 'No date';
+                    
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    return date.toLocaleDateString('en-US', options);
+                } catch {
+                    return 'Invalid date';
+                }
             }
             
             function getCategoryName(category) {
@@ -324,7 +400,7 @@
                     'finance': 'Finance',
                     'success': 'Success Stories'
                 };
-                return categories[category] || 'Uncategorized';
+                return categories[category.toLowerCase()] || 'Uncategorized';
             }
             
             function getCategoryColor(category) {
@@ -335,7 +411,17 @@
                     'finance': 'rgba(155, 89, 182, 0.1)',
                     'success': 'rgba(231, 76, 60, 0.1)'
                 };
-                return colors[category] || 'rgba(149, 165, 166, 0.1)';
+                return colors[category.toLowerCase()] || 'rgba(149, 165, 166, 0.1)';
+            }
+            
+            function showLoadingState() {
+                blogGrid.innerHTML = `
+                    <div class="loading-posts">
+                        <div class="loading-spinner"></div>
+                        <p>Loading articles from our knowledge base...</p>
+                    </div>
+                `;
+                pagination.innerHTML = '';
             }
             
             function showNoResults() {
@@ -344,25 +430,27 @@
                         <i class="fas fa-search"></i>
                         <h3>No Articles Found</h3>
                         <p>We couldn't find any articles matching your criteria. Try a different search or category.</p>
-                        <button class="btn btn-primary" onclick="resetFilters()">Show All Articles</button>
+                        <button class="btn btn-primary" id="reset-filters-btn">Show All Articles</button>
                     </div>
                 `;
+                document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
                 pagination.innerHTML = '';
             }
             
-            function showErrorState() {
+            function showErrorState(message = 'We\'re having trouble loading the blog posts. Please try again later.') {
                 blogGrid.innerHTML = `
                     <div class="no-results">
                         <i class="fas fa-exclamation-triangle"></i>
                         <h3>Error Loading Content</h3>
-                        <p>We're having trouble loading the blog posts. Please try again later.</p>
-                        <button class="btn btn-primary" onclick="fetchBlogPosts()">Retry</button>
+                        <p>${message}</p>
+                        <button class="btn btn-primary" id="retry-btn">Retry</button>
                     </div>
                 `;
+                document.getElementById('retry-btn').addEventListener('click', fetchBlogPosts);
                 pagination.innerHTML = '';
             }
             
-            window.resetFilters = function() {
+            function resetFilters() {
                 currentCategory = 'all';
                 currentSearchTerm = '';
                 searchInput.value = '';
@@ -372,7 +460,11 @@
                     btn.classList.remove('active');
                 });
                 fetchBlogPosts();
-            };
+            }
+            
+            // Expose necessary functions to global scope
+            window.resetFilters = resetFilters;
+            window.fetchBlogPosts = fetchBlogPosts;
         });
     </script>
 </body>
