@@ -1,11 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBp3URYWEW1AQgPC734BqN1zLQj7HaQ2yo",
+        authDomain: "moneychoicewebsite.firebaseapp.com",
+        databaseURL: "https://moneychoicewebsite-default-rtdb.firebaseio.com",
+        projectId: "moneychoicewebsite",
+        storageBucket: "moneychoicewebsite.appspot.com",
+        messagingSenderId: "395104519801",
+        appId: "1:395104519801:web:b918492f3faa603f9676a8"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
     // Configuration
-    const API_URL = '/api/blog/posts';
     const POSTS_PER_PAGE = 6;
     let currentPage = 1;
     let currentCategory = 'all';
     let currentSearchTerm = '';
     let totalPosts = 0;
+    let allPosts = [];
 
     // DOM Elements
     const blogGrid = document.getElementById('blog-grid');
@@ -33,47 +48,77 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchBlogPosts();
     });
 
-    // Fetch blog posts from API
-    async function fetchBlogPosts() {
+    // Fetch blog posts from Firebase
+    function fetchBlogPosts() {
         showLoadingState();
         
-        try {
-            const response = await fetch(`${API_URL}?page=${currentPage}&limit=${POSTS_PER_PAGE}&category=${currentCategory}&search=${encodeURIComponent(currentSearchTerm)}`);
+        const postsRef = database.ref('blogs');
+        
+        postsRef.once('value')
+            .then((snapshot) => {
+                const postsData = snapshot.val();
+                
+                // Convert Firebase object to array and filter only published posts
+                allPosts = postsData ? Object.entries(postsData).map(([key, value]) => ({
+                    id: key,
+                    ...value,
+                    // Ensure status is 'published' if not specified
+                    status: value.status || 'published'
+                })).filter(post => post.status === 'published') : [];
+                
+                totalPosts = allPosts.length;
+                
+                // Process and filter posts
+                const filteredPosts = filterPosts(allPosts);
+                
+                if (filteredPosts.length === 0) {
+                    showNoResults();
+                } else {
+                    const paginatedPosts = paginatePosts(filteredPosts);
+                    renderBlogPosts(paginatedPosts);
+                    setupPagination(filteredPosts.length);
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching blog posts:', error);
+                showErrorState(error);
+            });
+    }
+
+    // Filter posts based on category and search term
+    function filterPosts(posts) {
+        return posts.filter(post => {
+            // Filter by category (using tags since category field doesn't exist)
+            const categoryMatch = currentCategory === 'all' || 
+                                (post.tags && post.tags.includes(currentCategory));
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            // Filter by search term
+            const searchMatch = !currentSearchTerm || 
+                              (post.title && post.title.toLowerCase().includes(currentSearchTerm.toLowerCase())) ||
+                              (post.content && post.content.toLowerCase().includes(currentSearchTerm.toLowerCase())) ||
+                              (post.excerpt && post.excerpt.toLowerCase().includes(currentSearchTerm.toLowerCase()));
             
-            const data = await response.json();
-            totalPosts = data.totalPosts;
-            
-            if (data.posts.length === 0) {
-                showNoResults();
-            } else {
-                renderBlogPosts(data.posts);
-                setupPagination();
-            }
-        } catch (error) {
-            console.error('Error fetching blog posts:', error);
-            showErrorState();
-        }
+            return categoryMatch && searchMatch;
+        });
+    }
+
+    // Paginate the filtered posts
+    function paginatePosts(posts) {
+        // Sort posts by date (newest first)
+        posts.sort((a, b) => {
+            const dateA = a.createdAt || 0;
+            const dateB = b.createdAt || 0;
+            return dateB - dateA; // Sort descending
+        });
+        
+        const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+        return posts.slice(startIndex, startIndex + POSTS_PER_PAGE);
     }
 
     // Render blog posts to the grid
     function renderBlogPosts(posts) {
         // Clear existing content
         blogGrid.innerHTML = '';
-
-        // Sort posts by date (newest first)
-        posts.sort((a, b) => new Date(b.publish_date) - new Date(a.publish_date));
-
-        // Create featured post if exists
-        const featuredPost = posts.find(post => post.is_featured);
-        if (featuredPost) {
-            blogGrid.appendChild(createBlogCard(featuredPost, true));
-            // Remove featured post from regular posts
-            posts = posts.filter(post => post.id !== featuredPost.id);
-        }
 
         // Create regular posts
         posts.forEach(post => {
@@ -82,25 +127,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Create a blog card element
-    function createBlogCard(post, isFeatured = false) {
+    function createBlogCard(post) {
         const card = document.createElement('article');
-        card.className = `blog-card animate__animated animate__fadeIn ${isFeatured ? 'featured-post' : ''}`;
+        card.className = `blog-card animate__animated animate__fadeIn`;
+        
+        // Use first tag as category if exists
+        const category = post.tags && post.tags.length > 0 ? post.tags[0] : 'uncategorized';
         
         const cardContent = `
             <div class="blog-card-image">
-                <img src="${post.image_url || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'}" alt="${post.title}">
+                <img src="${post.imageUrl || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'}" alt="${post.title || 'Blog post'}">
             </div>
             <div class="blog-card-content">
                 <div class="blog-card-meta">
-                    <span><i class="far fa-calendar"></i> ${formatDate(post.publish_date)}</span>
-                    <span><i class="far fa-eye"></i> ${post.views?.toLocaleString() || '0'}</span>
-                    <span class="category-tag" style="background: ${getCategoryColor(post.category)}">
-                        ${getCategoryName(post.category)}
+                    <span><i class="far fa-calendar"></i> ${formatDate(post.createdAt)}</span>
+                    <span><i class="far fa-eye"></i> ${post.views ? post.views.toLocaleString() : '0'}</span>
+                    <span class="category-tag" style="background: ${getCategoryColor(category)}">
+                        ${getCategoryName(category)}
                     </span>
                 </div>
-                <h3>${post.title}</h3>
-                <p>${post.excerpt || 'Read this insightful article about ' + post.title}</p>
-                <a href="/blog/${post.slug}" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
+                <h3>${post.title || 'Untitled Post'}</h3>
+                <p>${post.excerpt || 'Read this insightful article'}</p>
+                <a href="/blog/${post.id}" class="blog-card-link">Read More <i class="fas fa-arrow-right"></i></a>
             </div>
         `;
         
@@ -109,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Set up pagination controls
-    function setupPagination() {
-        const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+    function setupPagination(filteredPostCount) {
+        const totalPages = Math.ceil(filteredPostCount / POSTS_PER_PAGE);
         
         // Clear existing pagination
         pagination.innerHTML = '';
@@ -126,13 +174,45 @@ document.addEventListener('DOMContentLoaded', function() {
         pagination.appendChild(prevBtn);
         
         // Page number buttons
-        for (let i = 1; i <= totalPages; i++) {
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+        
+        // Adjust if we're at the end
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+        
+        // First page and ellipsis
+        if (startPage > 1) {
+            pagination.appendChild(createPaginationButton(1, 1));
+            if (startPage > 2) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'pagination-ellipsis';
+                ellipsis.textContent = '...';
+                pagination.appendChild(ellipsis);
+            }
+        }
+        
+        // Page buttons
+        for (let i = startPage; i <= endPage; i++) {
             const pageBtn = createPaginationButton(
                 i,
                 i,
                 i === currentPage
             );
             pagination.appendChild(pageBtn);
+        }
+        
+        // Last page and ellipsis
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.className = 'pagination-ellipsis';
+                ellipsis.textContent = '...';
+                pagination.appendChild(ellipsis);
+            }
+            pagination.appendChild(createPaginationButton(totalPages, totalPages));
         }
         
         // Next button
@@ -144,21 +224,39 @@ document.addEventListener('DOMContentLoaded', function() {
         pagination.appendChild(nextBtn);
     }
 
-    // Create a pagination button
-    function createPaginationButton(content, page, isActive = false, isDisabled = false) {
-        const btn = document.createElement('button');
-        btn.className = `pagination-btn ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}`;
-        btn.innerHTML = content;
+    // Helper functions
+    function formatDate(timestamp) {
+        if (!timestamp) return 'No date';
         
-        if (page && !isActive && !isDisabled) {
-            btn.addEventListener('click', () => {
-                currentPage = page;
-                fetchBlogPosts();
-                window.scrollTo({ top: blogGrid.offsetTop - 100, behavior: 'smooth' });
-            });
-        }
+        // Convert Firebase timestamp (milliseconds) to Date
+        const date = new Date(Number(timestamp));
         
-        return btn;
+        if (isNaN(date.getTime())) return 'Invalid date';
+        
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    function getCategoryName(category) {
+        const categories = {
+            'business': 'Business',
+            'finance': 'Finance',
+            'investing': 'Investing',
+            'market': 'Market',
+            'success': 'Success'
+        };
+        return categories[category?.toLowerCase()] || 'Uncategorized';
+    }
+
+    function getCategoryColor(category) {
+        const colors = {
+            'business': 'rgba(67, 97, 238, 0.1)',
+            'finance': 'rgba(46, 204, 113, 0.1)',
+            'investing': 'rgba(241, 196, 15, 0.1)',
+            'market': 'rgba(155, 89, 182, 0.1)',
+            'success': 'rgba(231, 76, 60, 0.1)'
+        };
+        return colors[category?.toLowerCase()] || 'rgba(149, 165, 166, 0.1)';
     }
 
     // Show loading state
@@ -166,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
         blogGrid.innerHTML = `
             <div class="loading-posts">
                 <div class="loading-spinner"></div>
-                <p>Loading articles from our knowledge base...</p>
+                <p>Loading articles...</p>
             </div>
         `;
         pagination.innerHTML = '';
@@ -178,52 +276,31 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="no-results">
                 <i class="fas fa-search"></i>
                 <h3>No Articles Found</h3>
-                <p>We couldn't find any articles matching your criteria. Try a different search or category.</p>
-                <button class="btn btn-primary" onclick="resetFilters()">Show All Articles</button>
+                <p>Try a different search or category.</p>
+                <button class="btn btn-primary" onclick="resetFilters()">Show All</button>
             </div>
         `;
         pagination.innerHTML = '';
     }
 
-    // Show error state
-    function showErrorState() {
+    // Show error state with details
+    function showErrorState(error = null) {
+        const errorDetails = error ? `
+            <div class="error-details">
+                <p><small>${error.message || 'Unknown error'}</small></p>
+            </div>
+        ` : '';
+        
         blogGrid.innerHTML = `
             <div class="no-results">
                 <i class="fas fa-exclamation-triangle"></i>
                 <h3>Error Loading Content</h3>
-                <p>We're having trouble loading the blog posts. Please try again later.</p>
+                <p>We're having trouble loading the blog posts.</p>
+                ${errorDetails}
                 <button class="btn btn-primary" onclick="fetchBlogPosts()">Retry</button>
             </div>
         `;
         pagination.innerHTML = '';
-    }
-
-    // Helper functions
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-    }
-
-    function getCategoryName(category) {
-        const categories = {
-            'investing': 'Investing',
-            'business': 'Business Growth',
-            'market': 'Market Trends',
-            'finance': 'Financial Tips',
-            'success': 'Success Stories'
-        };
-        return categories[category] || 'Uncategorized';
-    }
-
-    function getCategoryColor(category) {
-        const colors = {
-            'investing': 'rgba(67, 97, 238, 0.1)',
-            'business': 'rgba(46, 204, 113, 0.1)',
-            'market': 'rgba(241, 196, 15, 0.1)',
-            'finance': 'rgba(155, 89, 182, 0.1)',
-            'success': 'rgba(231, 76, 60, 0.1)'
-        };
-        return colors[category] || 'rgba(149, 165, 166, 0.1)';
     }
 
     // Global reset function
@@ -233,7 +310,6 @@ document.addEventListener('DOMContentLoaded', function() {
         searchInput.value = '';
         currentPage = 1;
         
-        // Update active category button
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.category === 'all');
         });
