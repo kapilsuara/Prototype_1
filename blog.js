@@ -246,6 +246,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <a href="#${post.id}" class="blog-card-link view-post-btn" data-post-id="${post.id}">
                     Read More <i class="fas fa-arrow-right"></i>
                 </a>
+         
+                
             </div>
         `;
         
