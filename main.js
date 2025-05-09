@@ -7,13 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mobileMenuBtn.addEventListener('click', function() {
             this.classList.toggle('active');
             navLinks.classList.toggle('active');
-            
-            // Add animation class
-            if (navLinks.classList.contains('active')) {
-                navLinks.style.animation = 'slideInRight 0.3s ease-out forwards';
-            } else {
-                navLinks.style.animation = 'slideOutRight 0.3s ease-out forwards';
-            }
+            document.body.classList.toggle('menu-open');
         });
     }
 
@@ -21,11 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
-                navLinks.style.animation = 'slideOutRight 0.3s ease-out forwards';
-                setTimeout(() => {
-                    mobileMenuBtn.classList.remove('active');
-                    navLinks.classList.remove('active');
-                }, 300);
+                mobileMenuBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.classList.remove('menu-open');
             }
         });
     });
@@ -39,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                const headerHeight = document.querySelector('.glass-header').offsetHeight;
+                const headerHeight = document.querySelector('.header').offsetHeight;
                 const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                 
                 window.scrollTo({
@@ -55,17 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
-            backToTopBtn.style.display = 'flex';
-            setTimeout(() => {
-                backToTopBtn.style.opacity = '1';
-                backToTopBtn.style.transform = 'translateY(0)';
-            }, 10);
+            backToTopBtn.classList.add('show');
         } else {
-            backToTopBtn.style.opacity = '0';
-            backToTopBtn.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                backToTopBtn.style.display = 'none';
-            }, 300);
+            backToTopBtn.classList.remove('show');
         }
     });
     
@@ -85,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let touchStartX = 0;
     let touchEndX = 0;
     const sliderContainer = document.querySelector('.testimonials-slider');
+    let testimonialInterval;
 
     if (testimonialCards.length > 0) {
         function showTestimonial(index) {
@@ -116,12 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
             let newIndex = currentIndex - 1;
             if (newIndex < 0) newIndex = testimonialCards.length - 1;
             showTestimonial(newIndex);
+            resetTestimonialInterval();
         });
 
         if (nextBtn) nextBtn.addEventListener('click', () => {
             let newIndex = currentIndex + 1;
             if (newIndex >= testimonialCards.length) newIndex = 0;
             showTestimonial(newIndex);
+            resetTestimonialInterval();
         });
 
         // Touch support for slider
@@ -142,39 +129,47 @@ document.addEventListener('DOMContentLoaded', function() {
                     let newIndex = currentIndex + 1;
                     if (newIndex >= testimonialCards.length) newIndex = 0;
                     showTestimonial(newIndex);
+                    resetTestimonialInterval();
                 } else if (difference < -50) {
                     // Swipe right - previous
                     let newIndex = currentIndex - 1;
                     if (newIndex < 0) newIndex = testimonialCards.length - 1;
                     showTestimonial(newIndex);
+                    resetTestimonialInterval();
                 }
             }
+        }
 
-            // Auto-rotate testimonials with pause on hover
-            let testimonialInterval = setInterval(() => {
+        // Auto-rotate testimonials with pause on hover
+        function startTestimonialInterval() {
+            testimonialInterval = setInterval(() => {
                 let newIndex = currentIndex + 1;
                 if (newIndex >= testimonialCards.length) newIndex = 0;
                 showTestimonial(newIndex);
             }, 5000);
+        }
 
+        function resetTestimonialInterval() {
+            clearInterval(testimonialInterval);
+            startTestimonialInterval();
+        }
+
+        if (sliderContainer) {
             sliderContainer.addEventListener('mouseenter', () => {
                 clearInterval(testimonialInterval);
             });
             
             sliderContainer.addEventListener('mouseleave', () => {
-                clearInterval(testimonialInterval);
-                testimonialInterval = setInterval(() => {
-                    let newIndex = currentIndex + 1;
-                    if (newIndex >= testimonialCards.length) newIndex = 0;
-                    showTestimonial(newIndex);
-                }, 5000);
+                startTestimonialInterval();
             });
         }
+
+        startTestimonialInterval();
     }
 
     // Animate stats counter
     const statNumbers = document.querySelectorAll('.stat-number');
-    const statsSection = document.querySelector('.stats');
+    const statsSection = document.querySelector('.stats-section');
     
     if (statNumbers.length > 0 && statsSection) {
         function animateStats() {
@@ -212,6 +207,51 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(statsSection);
     }
 
+    // Contact form submission
+    const contactForm = document.getElementById('contact-form');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const service = document.getElementById('service').value;
+            const message = document.getElementById('message').value.trim();
+            
+            // Simple validation
+            if (!name || !email || !message || !service) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                
+                // Show success message
+                alert('Thank you for your message! We will get back to you soon.');
+                contactForm.reset();
+            }, 1500);
+        });
+    }
+
     // Add CSS animations dynamically
     const style = document.createElement('style');
     style.textContent = `
@@ -239,4 +279,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
+});
+
+// Preloader
+window.addEventListener('load', function() {
+    const preloader = document.querySelector('.preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 500);
+    }
 });
