@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MoneyChoice - MoneyChoice Credit Ratings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Actionable credit ratings based on 5 key factors with predictive power for next 1-4 quarters">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="credit.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <i class="fas fa-crown"></i>
+                    <span>MONEYCHOICE</span>
+                </a>
+            </div>
+            
+            <nav class="nav">
+                <ul class="nav-links">
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="supply_chain.html">Supply Chain</a></li>
+                    <li><a href="credit.html" class="active">Credit Ratings</a></li>
+                    <li class="auth-buttons">
+                        <button class="btn btn-outline" id="login-btn">Login</button>
+                        <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+                    </li>
+                    <li class="user-menu" style="display:none;">
+                        <a href="plans.html" class="btn btn-outline">My Account</a>
+                        <button class="btn btn-primary" id="logout-btn">Logout</button>
+                    </li>
+                </ul>
+                
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="credit-hero">
+        <div class="container">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>MoneyChoice <span>Credit Ratings</span></h1>
+                <p class="hero-subtitle">Actionable ratings based on 5 key factors with predictive power for next 1-4 quarters</p>
+                <div class="cta-buttons">
+                    <a href="#ratings" class="btn btn-primary btn-large">View Ratings</a>
+                    <a href="#methodology" class="btn btn-outline btn-large">Our Methodology</a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Credit rating analysis">
+            </div>
+        </div>
+    </section>
+
+    <!-- Ratings Section -->
+    <section id="ratings" class="ratings-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Ratings That <span>Matter</span></h2>
+                <p class="section-subtitle">Our comprehensive rating system evaluates companies based on 5 critical factors</p>
+            </div>
+            
+            <div class="ratings-grid">
+                <div class="rating-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="rating-number">1</div>
+                    <div class="rating-content">
+                        <h3>Leverage Open Ratings</h3>
+                        <p>Ratings provided publicly by institutions and credit agencies</p>
+                        <div class="rating-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rating-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="rating-number">2</div>
+                    <div class="rating-content">
+                        <h3>Hedge Fund Activity</h3>
+                        <p>How hedge funds are positioning themselves for this company</p>
+                        <div class="rating-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rating-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="rating-number">3</div>
+                    <div class="rating-content">
+                        <h3>Company Insiders</h3>
+                        <p>Confidence based on stock transactions of C-Suite and Directors</p>
+                        <div class="rating-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rating-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="rating-number">4</div>
+                    <div class="rating-content">
+                        <h3>Financial Liquidity</h3>
+                        <p>Profit & Loss, Balance sheet, and profitability analysis</p>
+                        <div class="rating-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rating-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="rating-number">5</div>
+                    <div class="rating-content">
+                        <h3>Competitive Position</h3>
+                        <p>Market share capture/erosion and competitive landscape</p>
+                        <div class="rating-icon">
+                            <i class="fas fa-chess-board"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ratings-note" data-aos="fade-up">
+                <p>All ratings are back-tested and provide the highest level of predictive power for the next 1-4 quarters</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="methodology" class="methodology-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Our <span>Methodology</span></h2>
+                <p class="section-subtitle">Transparent, unbiased credit ratings you can trust</p>
+            </div>
+            
+            <div class="methodology-content">
+                <div class="methodology-text" data-aos="fade-right">
+                    <div class="methodology-point">
+                        <div class="point-number">01</div>
+                        <div class="point-content">
+                            <h3>Monthly/Quarterly Updates</h3>
+                            <p>All ratings are refreshed every month or quarter to ensure you have the most current analysis</p>
+                        </div>
+                    </div>
+                    
+                    <div class="methodology-point">
+                        <div class="point-number">02</div>
+                        <div class="point-content">
+                            <h3>Risk Mitigation</h3>
+                            <p>We provide hedging options to help mitigate identified risks in your portfolio</p>
+                        </div>
+                    </div>
+                    
+                    <div class="methodology-point">
+                        <div class="point-number">03</div>
+                        <div class="point-content">
+                            <h3>Unbiased Analysis</h3>
+                            <p>We do not accept any fees or favors from institutions to "adjust" their ratings</p>
+                        </div>
+                    </div>
+                    
+                    <div class="methodology-point">
+                        <div class="point-number">04</div>
+                        <div class="point-content">
+                            <h3>Comprehensive Data</h3>
+                            <p>Our algorithms analyze thousands of data points to generate accurate ratings</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="methodology-image" data-aos="fade-left">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2022&q=80" alt="Credit rating methodology">
+                    <div class="image-overlay">
+                        <h3>Transparent Process</h3>
+                        <p>See exactly how we calculate our ratings</p>
+                        <a href="#" class="btn btn-outline">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Ratings Section -->
+    <section class="latest-ratings">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Latest <span>Ratings</span></h2>
+                <p class="section-subtitle">Recent credit rating updates and analysis</p>
+            </div>
+            
+            <div class="ratings-timeline" data-aos="fade-up">
+                <div class="timeline-item">
+                    <div class="timeline-date">September 23, 2024</div>
+                    <div class="timeline-content">
+                        <h3>Natural Gas – Overvalued</h3>
+                        <p>Expect 20% decline in natural gas prices based on current market conditions and inventory levels</p>
+                        <div class="timeline-rating negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>Downgrade</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">July 30, 2024</div>
+                    <div class="timeline-content">
+                        <h3>SOFI Upgraded</h3>
+                        <p>Price target increased to $14.20 following improved financial metrics and market position</p>
+                        <div class="timeline-rating positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Upgrade</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">June 29, 2024</div>
+                    <div class="timeline-content">
+                        <h3>Intuitive Machines Inc. (LUNR)</h3>
+                        <p>Target price raised to $11.45 based on contract wins and improved cash position</p>
+                        <div class="timeline-rating positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Upgrade</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">March 4, 2024</div>
+                    <div class="timeline-content">
+                        <h3>23andME</h3>
+                        <p>Upgraded to $2.28 following successful product launches and improved revenue projections</p>
+                        <div class="timeline-rating positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Upgrade</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">February 18, 2024</div>
+                    <div class="timeline-content">
+                        <h3>TWLO</h3>
+                        <p>Upgraded to $71.52 based on strong earnings and improved market share in cloud communications</p>
+                        <div class="timeline-rating positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Upgrade</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="view-all" data-aos="fade-up">
+                <a href="#" class="btn btn-outline">View All Ratings</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Benefits of <span>MoneyChoice Ratings</span></h2>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Risk Management</h3>
+                    <p>Identify potential risks in your portfolio before they materialize</p>
+                </div>
+                
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Data-Driven</h3>
+                    <p>Decisions based on comprehensive quantitative analysis</p>
+                </div>
+                
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="benefit-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Timely Updates</h3>
+                    <p>Regular updates to keep you informed of changing conditions</p>
+                </div>
+                
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="benefit-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3>Hedging Strategies</h3>
+                    <p>Customized options to protect your investments</p>
+                </div>
+                
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="benefit-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3>Insider Insights</h3>
+                    <p>Analysis of executive transactions and confidence levels</p>
+                </div>
+                
+                <div class="benefit-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="benefit-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Competitive Analysis</h3>
+                    <p>Understand market position relative to competitors</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <h2>Get Access to Premium Credit Ratings</h2>
+                <p>Join institutional investors and fund managers who trust MoneyChoice for their credit analysis</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary btn-large">Subscribe Now</a>
+                    <a href="#" class="btn btn-outline btn-large">Request Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-crown"></i>
+                        <span>MoneyChoice</span>
+                    </a>
+                    <p>Advanced credit rating solutions with predictive analytics</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#ratings">Credit Ratings</a></li>
+                        <li><a href="#methodology">Methodology</a></li>
+                        <li><a href="#">Hedging Strategies</a></li>
+                        <li><a href="#">Portfolio Analysis</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">FAQ's</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Market Trends</a></li>
+                        <li><a href="#">Accuracy Guarantee</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Disclosures</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 MoneyChoice. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/credit.js"></script>
+    
+    <script>
+        // Initialize AOS animation
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
+        // Preloader
+        $(window).on('load', function() {
+            $('.preloader').fadeOut('slow');
+        });
+    </script>
+</body>
+</html>
