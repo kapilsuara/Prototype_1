@@ -20,6 +20,7 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="biz.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 <body>
     <!-- Preloader -->
@@ -39,26 +40,27 @@
                 </a>
             </div>
             
-            <nav class="nav">
-                <ul class="nav-links">
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="supply_chain.html">Supply Chain</a></li>
-                    <li class="auth-buttons">
-                        <button class="btn btn-outline" id="login-btn">Login</button>
-                        <button class="btn btn-primary" id="signup-btn">Sign Up</button>
-                    </li>
-                    <li class="user-menu" style="display:none;">
-                        <a href="plans.html" class="btn btn-outline">My Account</a>
-                        <button class="btn btn-primary" id="logout-btn">Logout</button>
-                    </li>
-                </ul>
-                
-                <button class="mobile-menu-btn" id="mobile-menu-btn">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-            </nav>
+          <nav class="nav">
+    <ul class="nav-links" style="list-style: none; padding: 0; margin: 0;">
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="credit.html">Credit Ratings</a></li>
+        <li><a href="supply_chain.html">Supply Chain</a></li>
+        <li class="auth-buttons" style="list-style: none;">
+            <button class="btn btn-outline" id="login-btn">Login</button>
+            <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+        </li>
+        <li class="user-menu" style="display:none; list-style: none;">
+            <a href="plans.html" class="btn btn-outline">My Account</a>
+            <button class="btn btn-primary" id="logout-btn">Logout</button>
+        </li>
+    </ul>
+    
+    <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+</nav>
         </div>
     </header>
 
@@ -591,6 +593,163 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeLoginModal">&times;</button>
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <p>Login to access your account</p>
+            </div>
+            
+            <div id="loginOptions">
+                <div class="auth-message" id="loginMessage" style="display: none;"></div>
+                
+                <div class="auth-option" id="emailLoginOption">
+                    <button class="btn btn-primary btn-block" id="emailLoginBtn">
+                        <i class="fas fa-envelope"></i> Login with Email
+                    </button>
+                </div>
+                
+                <div class="social-login">
+                    <p>OR</p>
+                    <div class="social-buttons">
+                        <button class="btn btn-social google" id="googleLoginBtn">
+                            <i class="fab fa-google"></i> Continue with Google
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="auth-footer">
+                    Don't have an account? <a href="#" id="switchToSignup">Sign up</a>
+                </div>
+            </div>
+            
+            <form id="emailLoginForm" style="display: none;">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="Your email" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Your password" required>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block" id="submitLogin">
+                    Login
+                </button>
+                
+                <div class="auth-footer">
+                    <a href="#" id="backToLoginOptions"><i class="fas fa-arrow-left"></i> Back to login options</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeSignupModal">&times;</button>
+            <div class="modal-header">
+                <h2>Create Account</h2>
+                <p>Join MoneyChoice to get started</p>
+            </div>
+            
+            <div id="signupOptions">
+                <div class="auth-message" id="signupMessage" style="display: none;"></div>
+                
+                <div class="auth-option" id="emailSignupOption">
+                    <button class="btn btn-primary btn-block" id="emailSignupBtn">
+                        <i class="fas fa-envelope"></i> Sign up with Email
+                    </button>
+                </div>
+                
+                <div class="social-login">
+                    <p>OR</p>
+                    <div class="social-buttons">
+                        <button class="btn btn-social google" id="googleSignupBtn">
+                            <i class="fab fa-google"></i> Continue with Google
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="auth-footer">
+                    Already have an account? <a href="#" id="switchToLogin">Login</a>
+                </div>
+            </div>
+            
+            <form id="emailSignupForm" style="display: none;">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signupName" placeholder="Your full name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail" placeholder="Your email" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupPassword" placeholder="Create password" required>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar"></div>
+                        <div class="strength-text"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupConfirmPassword" placeholder="Confirm password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="terms-agree">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <label for="agreeTerms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block" id="submitSignup">
+                    Create Account
+                </button>
+                
+                <div class="auth-footer">
+                    <a href="#" id="backToSignupOptions"><i class="fas fa-arrow-left"></i> Back to signup options</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -600,6 +759,384 @@
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/firebase.js"></script>
+
+     <script>
+        // Initialize AOS animation
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
+        // Preloader
+        $(window).on('load', function() {
+            $('.preloader').fadeOut('slow');
+        });
+        
+        // Mobile menu toggle
+        $(document).ready(function() {
+            $('#mobile-menu-btn').click(function() {
+                $(this).toggleClass('active');
+                $('.nav-links').toggleClass('active');
+                $('body').toggleClass('menu-open');
+            });
+            
+            // Close mobile menu when clicking a link
+            $('.nav-links a').click(function() {
+                if ($(window).width() <= 768) {
+                    $('#mobile-menu-btn').removeClass('active');
+                    $('.nav-links').removeClass('active');
+                    $('body').removeClass('menu-open');
+                }
+            });
+            
+            // Back to top button
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 300) {
+                    $('#back-to-top').fadeIn();
+                } else {
+                    $('#back-to-top').fadeOut();
+                }
+            });
+            
+            $('#back-to-top').click(function() {
+                $('html, body').animate({scrollTop: 0}, 'smooth');
+                return false;
+            });
+            
+            // Testimonial slider
+            let currentTestimonial = 0;
+            const testimonials = $('.testimonial-card');
+            const dots = $('.dot');
+            
+            function showTestimonial(index) {
+                testimonials.removeClass('active').eq(index).addClass('active');
+                dots.removeClass('active').eq(index).addClass('active');
+                currentTestimonial = index;
+            }
+            
+            $('.slider-next').click(function() {
+                let nextIndex = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(nextIndex);
+            });
+            
+            $('.slider-prev').click(function() {
+                let prevIndex = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
+                showTestimonial(prevIndex);
+            });
+            
+            dots.click(function() {
+                let dotIndex = $(this).index();
+                showTestimonial(dotIndex);
+            });
+            
+            // Auto-rotate testimonials
+            setInterval(function() {
+                let nextIndex = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(nextIndex);
+            }, 5000);
+            
+            // Animate stats counter
+            function animateStats() {
+                $('.stat-number').each(function() {
+                    let $this = $(this);
+                    let target = parseInt($this.attr('data-count'));
+                    let count = 0;
+                    let duration = 2000;
+                    let increment = target / (duration / 16);
+                    
+                    let timer = setInterval(function() {
+                        count += increment;
+                        if (count >= target) {
+                            $this.text(target);
+                            clearInterval(timer);
+                        } else {
+                            $this.text(Math.floor(count));
+                        }
+                    }, 16);
+                });
+            }
+            
+            // Trigger stats animation when scrolled to
+            $(window).scroll(function() {
+                let statsSection = $('.stats-section');
+                let windowHeight = $(window).height();
+                let scrollTop = $(window).scrollTop();
+                let statsOffset = statsSection.offset().top;
+                
+                if (scrollTop + windowHeight > statsOffset + 100 && !statsSection.hasClass('animated')) {
+                    statsSection.addClass('animated');
+                    animateStats();
+                }
+            });
+            
+            // Contact form submission
+            $('#contact-form').submit(function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = $('#name').val().trim();
+                const email = $('#email').val().trim();
+                const service = $('#service').val();
+                const message = $('#message').val().trim();
+                
+                // Simple validation
+                if (!name || !email || !message || !service) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+                
+                // Show loading state
+                const submitBtn = $(this).find('button[type="submit"]');
+                const originalBtnText = submitBtn.html();
+                
+                submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Sending...');
+                submitBtn.prop('disabled', true);
+                
+                // Simulate API call
+                setTimeout(function() {
+                    submitBtn.html(originalBtnText);
+                    submitBtn.prop('disabled', false);
+                    
+                    // Show success message
+                    alert('Thank you for your message! We will get back to you soon.');
+                    $('#contact-form')[0].reset();
+                }, 1500);
+            });
+            
+            // Auth Modal Handling
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            const loginBtn = document.getElementById('login-btn');
+            const signupBtn = document.getElementById('signup-btn');
+            const closeLoginModal = document.getElementById('closeLoginModal');
+            const closeSignupModal = document.getElementById('closeSignupModal');
+            const switchToSignup = document.getElementById('switchToSignup');
+            const switchToLogin = document.getElementById('switchToLogin');
+            const emailLoginBtn = document.getElementById('emailLoginBtn');
+            const emailSignupBtn = document.getElementById('emailSignupBtn');
+            const backToLoginOptions = document.getElementById('backToLoginOptions');
+            const backToSignupOptions = document.getElementById('backToSignupOptions');
+            const emailLoginForm = document.getElementById('emailLoginForm');
+            const emailSignupForm = document.getElementById('emailSignupForm');
+            const loginOptions = document.getElementById('loginOptions');
+            const signupOptions = document.getElementById('signupOptions');
+            const ctaButtons = document.querySelectorAll('.cta-buttons .btn-primary');
+            
+            // Open modals
+            loginBtn.onclick = function() {
+                loginModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            signupBtn.onclick = function() {
+                signupModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Close modals
+            closeLoginModal.onclick = function() {
+                loginModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            
+            closeSignupModal.onclick = function() {
+                signupModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Switch between login and signup
+            switchToSignup.onclick = function(e) {
+                e.preventDefault();
+                loginModal.style.display = 'none';
+                signupModal.style.display = 'block';
+            }
+            
+            switchToLogin.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = 'none';
+                loginModal.style.display = 'block';
+            }
+            
+            // Show email login form
+            emailLoginBtn.onclick = function(e) {
+                e.preventDefault();
+                loginOptions.style.display = 'none';
+                emailLoginForm.style.display = 'block';
+            }
+            
+            // Show email signup form
+            emailSignupBtn.onclick = function(e) {
+                e.preventDefault();
+                signupOptions.style.display = 'none';
+                emailSignupForm.style.display = 'block';
+            }
+            
+            // Back to options
+            backToLoginOptions.onclick = function(e) {
+                e.preventDefault();
+                emailLoginForm.style.display = 'none';
+                loginOptions.style.display = 'block';
+            }
+            
+            backToSignupOptions.onclick = function(e) {
+                e.preventDefault();
+                emailSignupForm.style.display = 'none';
+                signupOptions.style.display = 'block';
+            }
+            
+            // Close when clicking outside
+            window.onclick = function(event) {
+                if (event.target == loginModal) {
+                    loginModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+                if (event.target == signupModal) {
+                    signupModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+            
+            // CTA buttons open signup modal
+            ctaButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    signupModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Password strength indicator
+            $('#signupPassword').on('input', function() {
+                const password = $(this).val();
+                const strengthBar = $(this).siblings('.password-strength').find('.strength-bar');
+                const strengthText = $(this).siblings('.password-strength').find('.strength-text');
+                
+                // Reset
+                strengthBar.css('width', '0%').css('background-color', '#ddd');
+                strengthText.text('');
+                
+                if (password.length > 0) {
+                    // Very simple strength calculation
+                    let strength = 0;
+                    
+                    // Length
+                    if (password.length >= 8) strength += 25;
+                    if (password.length >= 12) strength += 25;
+                    
+                    // Complexity
+                    if (/[A-Z]/.test(password)) strength += 15;
+                    if (/[0-9]/.test(password)) strength += 15;
+                    if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+                    
+                    // Update UI
+                    strengthBar.css('width', strength + '%');
+                    
+                    if (strength < 40) {
+                        strengthBar.css('background-color', '#ff4d4d');
+                        strengthText.text('Weak');
+                    } else if (strength < 70) {
+                        strengthBar.css('background-color', '#ffa64d');
+                        strengthText.text('Moderate');
+                    } else {
+                        strengthBar.css('background-color', '#4CAF50');
+                        strengthText.text('Strong');
+                    }
+                }
+            });
+            
+            // Form submissions (simulated)
+            $('#emailLoginForm').submit(function(e) {
+                e.preventDefault();
+                const email = $('#loginEmail').val();
+                const password = $('#loginPassword').val();
+                
+                // Show loading state
+                $('#submitLogin').html('<i class="fas fa-spinner fa-spin"></i> Logging in...');
+                
+                // Simulate API call
+                setTimeout(function() {
+                    // For demo purposes, just show success
+                    $('#loginMessage').text('Login successful! Redirecting...').addClass('success').show();
+                    $('#submitLogin').html('Login');
+                    
+                    // In a real app, you would redirect or update UI here
+                    setTimeout(function() {
+                        loginModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        $('.auth-buttons').hide();
+                        $('.user-menu').show();
+                    }, 1500);
+                }, 1500);
+            });
+            
+            $('#emailSignupForm').submit(function(e) {
+                e.preventDefault();
+                const name = $('#signupName').val();
+                const email = $('#signupEmail').val();
+                const password = $('#signupPassword').val();
+                const confirmPassword = $('#signupConfirmPassword').val();
+                
+                // Simple validation
+                if (password !== confirmPassword) {
+                    $('#signupMessage').text('Passwords do not match').addClass('error').show();
+                    return;
+                }
+                
+                // Show loading state
+                $('#submitSignup').html('<i class="fas fa-spinner fa-spin"></i> Creating account...');
+                
+                // Simulate API call
+                setTimeout(function() {
+                    // For demo purposes, just show success
+                    $('#signupMessage').text('Account created successfully!').addClass('success').show();
+                    $('#submitSignup').html('Create Account');
+                    
+                    // In a real app, you would redirect or update UI here
+                    setTimeout(function() {
+                        signupModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        $('.auth-buttons').hide();
+                        $('.user-menu').show();
+                    }, 1500);
+                }, 1500);
+            });
+            
+            // Google login/signup (simulated)
+            $('#googleLoginBtn, #googleSignupBtn').click(function() {
+                const isLogin = $(this).attr('id') === 'googleLoginBtn';
+                const messageElement = isLogin ? $('#loginMessage') : $('#signupMessage');
+                
+                messageElement.text('Redirecting to Google...').addClass('success').show();
+                
+                // Simulate Google auth
+                setTimeout(function() {
+                    messageElement.text('Authentication successful! Redirecting...');
+                    
+                    setTimeout(function() {
+                        (isLogin ? loginModal : signupModal).style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        $('.auth-buttons').hide();
+                        $('.user-menu').show();
+                    }, 1000);
+                }, 1500);
+            });
+            
+            // Logout
+            $('#logout-btn').click(function() {
+                $('.auth-buttons').show();
+                $('.user-menu').hide();
+            });
+        });
+    </script>
     
     <script>
         // Initialize AOS animation
@@ -753,6 +1290,10 @@
                 }, 1500);
             });
         });
+
     </script>
+
+
+
 </body>
 </html>

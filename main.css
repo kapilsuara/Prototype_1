@@ -215,6 +215,9 @@ section {
   display: flex;
   align-items: center;
   gap: 25px;
+  list-style: none; /* This removes the dots */
+  padding: 0;
+  margin: 0;
 }
 
 .nav-links a {
@@ -271,6 +274,7 @@ section {
 .mobile-menu-btn.active .bar:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
+
 
 /* Hero Section */
 .hero {
