@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MoneyChoice - Supply Chain Optimization & Demand Forecasting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MoneyChoice provides advanced supply chain optimization and demand forecasting solutions with 80%+ accuracy guarantee.">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="supply_chain.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <i class="fas fa-crown"></i>
+                    <span>MONEYCHOICE</span>
+                </a>
+            </div>
+            
+            <nav class="nav">
+                <!-- <ul class="nav-links"> -->
+                    <!-- <li><a href="blog.html">Blog</a></li>
+                    <li><a href="supply_chain.html" class="active">Supply Chain</a></li> -->
+                    <li class="auth-buttons">
+                        <button class="btn btn-outline" id="login-btn">Login</button>
+                        <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+                    </li>
+                    <li class="user-menu" style="display:none;">
+                        <a href="plans.html" class="btn btn-outline">My Account</a>
+                        <button class="btn btn-primary" id="logout-btn">Logout</button>
+                    </li>
+                
+                
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="supply-hero">
+        <div class="container">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>Transform Your Supply Chain with <span>Advanced Forecasting</span></h1>
+                <p class="hero-subtitle">Achieve 80%+ accuracy in demand forecasting and optimize your supply chain operations</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary btn-large">Get Started</a>
+                    <a href="#solutions" class="btn btn-outline btn-large">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Supply chain optimization">
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee Section -->
+    <section class="guarantee-section">
+        <div class="container">
+            <div class="guarantee-card" data-aos="fade-up">
+                <div class="guarantee-content">
+                    <h2>Our <span>Guarantee</span></h2>
+                    <p>You pay only if we get you 80% accuracy or more</p>
+                    <div class="accuracy-badge">
+                        <span>80%+</span>
+                        <span>Accuracy</span>
+                    </div>
+                </div>
+                <div class="guarantee-image">
+                    <img src="TIno_IQ_supply _chain.jpg" alt="TINO IQ Supply Chain Guarantee">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenges Section -->
+    <section id="solutions" class="challenges-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>We Understand Your <span>Challenges</span></h2>
+                <p class="section-subtitle">We identify where you are in the business cycle and how businesses like yours tend to perform</p>
+            </div>
+            
+            <div class="challenges-content">
+                <div class="challenges-text" data-aos="fade-right">
+                    <p>We use all of the information as an input into models to give you best predictability. Additionally we understand global currency fluctuations and macro events. Models even factor into how your business would react to scenarios like COVID-19 or how it shaped the demand with high inflation, employment, money supply etc.</p>
+                    
+                    <h3>We handle all kind of demand scenarios, including:</h3>
+                    <div class="demand-types">
+                        <div class="demand-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Steady</h4>
+                            <p>Demand remains stable over time</p>
+                        </div>
+                        <div class="demand-card">
+                            <i class="fas fa-snowflake"></i>
+                            <h4>Seasonal</h4>
+                            <p>Demand fluctuates predictably due to seasons or events</p>
+                        </div>
+                        <div class="demand-card">
+                            <i class="fas fa-trend-up"></i>
+                            <h4>Trend</h4>
+                            <p>Gradual increase or decrease in demand over time</p>
+                        </div>
+                        <div class="demand-card">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Erratic</h4>
+                            <p>Sporadic and unpredictable demand</p>
+                        </div>
+                        <div class="demand-card">
+                            <i class="fas fa-arrows-rotate"></i>
+                            <h4>Cyclical</h4>
+                            <p>Demand follows economic cycles</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="challenges-image" data-aos="fade-left">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Supply chain challenges">
+                </div> -->
+            </div>
+            
+            <div class="specific-challenges" data-aos="fade-up">
+                <h3>Specific Challenges We Address:</h3>
+                <div class="challenge-list">
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Intermittent demand</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Customer concentration</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Seasonal demand</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>NPI – ramp up time / old product going out</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Big deals</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>E&O can hurt your books</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Lead Time</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>You sell both HW and SW</span>
+                    </div>
+                    <div class="challenge-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Inflation changing customer expectations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Why <span>TINO IQ</span> Supply Chain</h2>
+            </div>
+            
+            <div class="reasons-grid">
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="reason-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>100+ Years of Experience</h3>
+                    <p>Team has over 100+ years of experience in Industry's top supply chains & logistics organizations</p>
+                </div>
+                
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="reason-icon">
+                        <i class="fas fa-chess"></i>
+                    </div>
+                    <h3>Domain Expertise</h3>
+                    <p>Deep understanding of supply chain – Planning / Order / Manufacture / Delivery / Logistics</p>
+                </div>
+                
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="reason-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Accuracy Guarantee</h3>
+                    <p>Only TINO IQ gives solid backing on 80% accuracy – GUARANTEED</p>
+                </div>
+                
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="reason-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Silicon Valley Based</h3>
+                    <p>Team is based in Silicon Valley, California</p>
+                </div>
+                
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="reason-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Advanced Algorithms</h3>
+                    <p>Industry's most comprehensive suite of algorithms</p>
+                </div>
+                
+                <div class="reason-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="reason-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Sales Generator</h3>
+                    <p>Transforms Supply chain from a "cost center" to a CX driven "sales generator"</p>
+                </div>
+            </div>
+            
+            <div class="cognitive-forecasting" data-aos="fade-up">
+                <div class="cognitive-content">
+                    <h3>Proprietary <span>Cognitive Forecasting</span></h3>
+                    <p>Using proprietary "Cognitive Forecasting" – TINO IQ generates actionable ideas which enables sales teams to generate "new alpha" customer demand. "Cognitive Forecasting" was implemented in a top 10 Gartner supply chain company for demand planning of $50 billion.</p>
+                    <p>TINO IQ's algorithms have a pulse on customer and economic conditions "expected" for future. Check our "Results" page to see how algorithms have successfully managed to predict at 80% or higher accuracy – We don't give excuses of COVID-19, war, chip constraint or material shortage.</p>
+                </div>
+                <div class="cognitive-image">
+                    <img src="tino_iq_supply_chain_guarantee-1024x580.jpg" alt="Cognitive Forecasting">
+                </div>
+            </div>
+            
+            <div class="forecast-basis" data-aos="fade-up">
+                <h3>TINO IQ's forecast is based on:</h3>
+                <div class="basis-grid">
+                    <div class="basis-card">
+                        <i class="fas fa-user-tie"></i>
+                        <h4>Human Intelligence</h4>
+                        <p>Supply chain domain expertise</p>
+                    </div>
+                    <div class="basis-card">
+                        <i class="fas fa-coins"></i>
+                        <h4>Financial IQ</h4>
+                        <p>Economics</p>
+                    </div>
+                    <div class="basis-card">
+                        <i class="fas fa-robot"></i>
+                        <h4>Algorithms</h4>
+                        <p>Causal, Cognitive, AI/ML, Quantum</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Engagement Model Section -->
+    <section class="engagement-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Our <span>Engagement Model</span></h2>
+            </div>
+            
+            <div class="engagement-steps">
+                <div class="step-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Define Requirements</h3>
+                        <p>You tell us what Product / Business unit / Component you want to predict</p>
+                    </div>
+                </div>
+                
+                <div class="step-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Data Sharing</h3>
+                        <p>Share historical data in a secure cloud – You can change names for any products if you want to keep name secret – However more info we have about your product, the better would be forecast</p>
+                    </div>
+                </div>
+                
+                <div class="step-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Analysis & Modeling</h3>
+                        <p>Our engineers, scientists and business domain experts work on your data – applying all algorithms above, business understanding and come up with a most probable scenario for your product</p>
+                    </div>
+                </div>
+                
+                <div class="step-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Transparent Pricing</h3>
+                        <p>Fee range from .001% to 1.0% depending on amount and unique SKU's. Example: Forecasting for a product with revenue $1 million would only have a small fees of $1K</p>
+                    </div>
+                </div>
+                
+                <div class="step-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Comprehensive Service</h3>
+                        <p>All inclusive – Cloud / Infrastructure / Economists / Data Scientists</p>
+                    </div>
+                </div>
+                
+                <div class="step-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Additional Insights</h3>
+                        <p>Get insights into how sensitive demand would be in next few quarters w.r.t macro-economic factors like inflation, money supply, currency hedging, equity/ bond markets, lead times, consumer confidence and many more</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guarantee-banner" data-aos="fade-up">
+                <div class="banner-content">
+                    <h3>Bottom line: With TINO IQ, you pay only if you get 80% or higher accuracy</h3>
+                    <p>No result = No fees</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="clients-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Our <span>Team Experience</span></h2>
+                <p class="section-subtitle">Among our team of experts are individuals who have worked at:</p>
+            </div>
+            
+            <div class="client-logos" data-aos="fade-up">
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg" alt="Cisco">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/J%26J-Logo.svg" alt="Johnson & Johnson">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Maersk_Logo.svg" alt="Maersk">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg" alt="HP">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Juniper_Networks_logo.svg" alt="Juniper">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Sony_logo.svg" alt="Sony">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_logo_%282006-2020%29.svg" alt="Intel">
+                </div>
+                <div class="logo-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Dell_Logo.svg" alt="Dell">
+                </div>
+            </div>
+            
+            <div class="client-note" data-aos="fade-up">
+                <p>"We restrict number of clients each quarter to ensure best forecast – Book your spot at earliest"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Get in <span>Touch</span></h2>
+                <p class="section-subtitle">Contact us to learn more about our supply chain solutions</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h4>Email Us</h4>
+                        <p>contact@tinoiq.com</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h4>Call Us</h4>
+                        <p>+1 (408)-835-0983</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h4>Visit Us</h4>
+                        <p>2225 Buchanan Rd #A<br>Antioch, CA 94597</p>
+                    </div>
+                </div>
+                
+                <form id="contact-form" class="contact-form" data-aos="fade-left" data-aos-delay="200">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="name" placeholder="Your name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" placeholder="Your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-building"></i>
+                            <input type="text" id="company" placeholder="Your company">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-comment"></i>
+                            <textarea id="message" placeholder="Tell us about your supply chain needs" required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <h2>Ready to Optimize Your Supply Chain?</h2>
+                <p>Join industry leaders who trust TINO IQ for their demand forecasting and supply chain optimization</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary btn-large">Get Started</a>
+                    <a href="tel:+14088350983" class="btn btn-outline btn-large">Call Us Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-crown"></i>
+                        <span>MoneyChoice</span>
+                    </a>
+                    <p>Advanced supply chain solutions with guaranteed accuracy.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Solutions</h3>
+                    <ul>
+                        <li><a href="#solutions">Demand Forecasting</a></li>
+                        <li><a href="#solutions">Supply Chain Optimization</a></li>
+                        <li><a href="#solutions">Cognitive Forecasting</a></li>
+                        <li><a href="#solutions">Inventory Management</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">FAQ's</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Accuracy Guarantee</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 MoneyChoice Biz. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/firebase.js"></script>
+    
+    <script>
+        // Initialize AOS animation
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+        
+        // Preloader
+        $(window).on('load', function() {
+            $('.preloader').fadeOut('slow');
+        });
+    </script>
+</body>
+</html>
